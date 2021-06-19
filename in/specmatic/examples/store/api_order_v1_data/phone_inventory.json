@@ -1,0 +1,16 @@
+{
+  "mock-http-request": {
+    "method": "GET",
+    "path": "/inventory",
+    "query": {
+      "productid": 20
+    }
+  },
+  "mock-http-response": {
+    "status": 200,
+    "body": {
+      "quantity": 0,
+      "productid": 20
+    }
+  }
+}

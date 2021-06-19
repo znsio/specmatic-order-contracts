@@ -1,0 +1,7 @@
+{
+  "pipelines": [
+    {"owner":  "znsio", "repo":  "order-api", "event_type":  "contracts changed"},
+    {"owner":  "znsio", "repo":  "order-ui", "event_type":  "contracts changed"}
+  ]
+  
+}
