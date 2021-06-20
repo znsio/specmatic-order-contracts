@@ -91,7 +91,7 @@ Feature: Contract for the order API
       | id |
       | 10 |
 
-  Scenario Outline: Delete an order
+  Scenario Outline: Cancel an order
     When DELETE /orders/(id:number)
     And request-header Authenticate (string)
     Then status 204
