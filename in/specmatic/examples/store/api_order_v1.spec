@@ -7,7 +7,7 @@ Feature: Contract for the order API
       | type | (ProductType) |
       | id   | (number)      |
     And type Products (Product*)
-    And enum OrderStatus (string) values fulfilled,pending
+    And enum OrderStatus (string) values fulfilled,pending,cancelled
     And type Order
       | productid | (number)      |
       | count     | (number)      |
