@@ -34,7 +34,7 @@ Feature: Contract for the order API
       | name     | type   | id | Authenticate  |
       | XYZ Fone | gadget | 10 | ($auth.token) |
 
-  Scenario Outline: Delete a product from the database
+  Scenario Outline: Delete a product
     When DELETE /products/(id:number)
     And request-header Authenticate (string)
     Then status 204
