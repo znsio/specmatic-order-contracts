@@ -1,0 +1,271 @@
+openapi: 3.0.0
+info:
+  title: Order API
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/products/{id}':
+    parameters:
+      - schema:
+          type: number
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Fetch product details
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+      operationId: get-product-id
+    post:
+      summary: Update product details
+      operationId: post-products-id
+      responses:
+        '204':
+          description: No Content
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authenticate
+          required: true
+    delete:
+      summary: Delete a product
+      operationId: delete-products-id
+      responses:
+        '204':
+          description: No Content
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authenticate
+          required: true
+  /products:
+    post:
+      summary: Add new product
+      operationId: post-products
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductId'
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authenticate
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDetails'
+    get:
+      summary: Search for products
+      operationId: get-products
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: name
+        - schema:
+            type: string
+          in: query
+          name: type
+  /orders:
+    post:
+      summary: Create an order
+      operationId: post-orders
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderId'
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authenticate
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderDetails'
+    get:
+      summary: Search for orders
+      operationId: get-orders
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: productid
+        - schema:
+            type: string
+          in: query
+          name: status
+      description: ''
+  '/orders/{id}':
+    parameters:
+      - schema:
+          type: number
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Fetch order details
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+      operationId: get-orders-id
+      parameters: []
+    post:
+      summary: Update order details
+      operationId: post-orders-id
+      responses:
+        '204':
+          description: No Content
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authenticate
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+    delete:
+      summary: Cancel an order
+      operationId: delete-orders-id
+      responses:
+        '204':
+          description: No Content
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authenticate
+          required: true
+components:
+  schemas:
+    ProductDetails:
+      title: Product Details
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ProductType'
+        inventory:
+          type: integer
+      required:
+        - name
+        - type
+        - inventory
+    ProductType:
+      type: string
+      title: Product Type
+      enum:
+        - book
+        - food
+        - gadget
+        - other
+    ProductId:
+      title: Product Id
+      type: object
+      properties:
+        id:
+          type: integer
+      required:
+        - id
+    Product:
+      title: Product
+      allOf:
+        - $ref: '#/components/schemas/ProductId'
+        - $ref: '#/components/schemas/ProductDetails'
+    OrderDetails:
+      title: Order Details
+      type: object
+      properties:
+        productid:
+          type: integer
+        count:
+          type: integer
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+      required:
+        - productid
+        - count
+        - status
+    OrderStatus:
+      type: string
+      title: OrderStatus
+      enum:
+        - fulfilled
+        - pending
+        - cancelled
+    OrderId:
+      title: Order Id
+      type: object
+      properties:
+        id:
+          type: integer
+      required:
+        - id
+    Order:
+      title: Order
+      allOf:
+        - $ref: '#/components/schemas/OrderId'
+        - $ref: '#/components/schemas/OrderDetails'
+  parameters:
+    OrderStatusParam:
+      name: OrderStatusParam
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - fulfilled
+          - pending
+          - cancelled
