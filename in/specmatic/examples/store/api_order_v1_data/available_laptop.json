@@ -12,12 +12,14 @@
       {
         "name": "XYZ Laptop",
         "type": "gadget",
-        "id": 10
+        "id": 10,
+        "inventory": 10
       },
       {
         "name": "XYZ Phone",
         "type": "gadget",
-        "id": 20
+        "id": 20,
+        "inventory": 0
       }
     ]
   }

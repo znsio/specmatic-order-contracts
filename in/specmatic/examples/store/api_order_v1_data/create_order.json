@@ -14,6 +14,8 @@
 
   "mock-http-response": {
     "status": 201,
-    "body": "12"
+    "body": {
+      "id": 10
+    }
   }
 }
