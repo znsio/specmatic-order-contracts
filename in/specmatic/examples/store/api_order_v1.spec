@@ -11,14 +11,6 @@ Feature: Order API
       | id |
       | 10 |
 
-  Scenario Outline: Fetch product details
-    When GET /products/(id:number)
-    Then status 500
-
-    Examples:
-      | id |
-      | 100 |
-
   Scenario Outline: Update product details
     When POST /products/(id:number)
     Then status 204
@@ -51,6 +43,14 @@ Feature: Order API
       | type   | name |
       | gadget |      |
       | gadget | XYZ  |
+
+  Scenario Outline: Search for products
+    When GET /products?name=(string)&type=(string)
+    Then status 500
+
+    Examples:
+      | type | name |
+      | book |      |
 
   Scenario Outline: Create an order
     When POST /orders

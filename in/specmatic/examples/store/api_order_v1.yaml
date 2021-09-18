@@ -22,24 +22,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
-        '500':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  timestamp:
-                    type: string
-                  status:
-                    type: integer
-                  error:
-                    type: string
-                  message:
-                    type: string
-                  path:
-                    type: string
-
       operationId: get-product-id
     post:
       summary: Update product details
@@ -104,6 +86,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
+        '500':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
       parameters:
         - schema:
             type: string
