@@ -21,7 +21,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
+                $ref: './common.yaml#/components/schemas/Product'
       operationId: get-product-id
     post:
       summary: Update product details
@@ -33,7 +33,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: './common.yaml#/components/schemas/Product'
       parameters:
         - schema:
             type: string
@@ -62,7 +62,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductId'
+                $ref: './common.yaml#/components/schemas/ProductId'
       parameters:
         - schema:
             type: string
@@ -73,7 +73,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductDetails'
+              $ref: './common.yaml#/components/schemas/ProductDetails'
     get:
       summary: Search for products
       operationId: get-products
@@ -85,7 +85,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Product'
+                  $ref: './common.yaml#/components/schemas/Product'
         '500':
           description: OK
           content:
@@ -111,7 +111,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderId'
+                $ref: './common.yaml#/components/schemas/OrderId'
       parameters:
         - schema:
             type: string
@@ -122,7 +122,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrderDetails'
+              $ref: './common.yaml#/components/schemas/OrderDetails'
     get:
       summary: Search for orders
       operationId: get-orders
@@ -134,7 +134,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Order'
+                  $ref: './common.yaml#/components/schemas/Order'
       parameters:
         - schema:
             type: number
@@ -161,7 +161,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: './common.yaml#/components/schemas/Order'
       operationId: get-orders-id
       parameters: []
     post:
@@ -180,7 +180,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Order'
+              $ref: './common.yaml#/components/schemas/Order'
     delete:
       summary: Cancel an order
       operationId: delete-orders-id
@@ -193,85 +193,3 @@ paths:
           in: header
           name: Authenticate
           required: true
-components:
-  schemas:
-    ProductDetails:
-      title: Product Details
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          $ref: '#/components/schemas/ProductType'
-        inventory:
-          type: integer
-      required:
-        - name
-        - type
-        - inventory
-    ProductType:
-      type: string
-      title: Product Type
-      enum:
-        - book
-        - food
-        - gadget
-        - other
-    ProductId:
-      title: Product Id
-      type: object
-      properties:
-        id:
-          type: integer
-      required:
-        - id
-    Product:
-      title: Product
-      allOf:
-        - $ref: '#/components/schemas/ProductId'
-        - $ref: '#/components/schemas/ProductDetails'
-    OrderDetails:
-      title: Order Details
-      type: object
-      properties:
-        productid:
-          type: integer
-        count:
-          type: integer
-        status:
-          $ref: '#/components/schemas/OrderStatus'
-      required:
-        - productid
-        - count
-        - status
-    OrderStatus:
-      type: string
-      title: OrderStatus
-      enum:
-        - fulfilled
-        - pending
-        - cancelled
-    OrderId:
-      title: Order Id
-      type: object
-      properties:
-        id:
-          type: integer
-      required:
-        - id
-    Order:
-      title: Order
-      allOf:
-        - $ref: '#/components/schemas/OrderId'
-        - $ref: '#/components/schemas/OrderDetails'
-  parameters:
-    OrderStatusParam:
-      name: OrderStatusParam
-      in: query
-      required: false
-      schema:
-        type: string
-        enum:
-          - fulfilled
-          - pending
-          - cancelled
