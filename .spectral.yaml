@@ -1,0 +1,3 @@
+extends: spectral:oas
+rules:
+  path-keys-no-trailing-slash: error
