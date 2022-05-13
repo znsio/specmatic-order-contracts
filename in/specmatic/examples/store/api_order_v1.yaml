@@ -26,6 +26,8 @@ paths:
     post:
       summary: Update product details
       operationId: post-products-id
+      security:
+        - ApiKeyAuth: []
       responses:
         '204':
           description: No Content
@@ -34,28 +36,20 @@ paths:
           application/json:
             schema:
               $ref: './common.yaml#/components/schemas/Product'
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authenticate
-          required: true
     delete:
       summary: Delete a product
       operationId: delete-products-id
+      security:
+        - ApiKeyAuth: []
       responses:
         '204':
           description: No Content
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authenticate
-          required: true
   /products:
     post:
       summary: Add new product
       operationId: post-products
+      security:
+        - ApiKeyAuth: []
       responses:
         '201':
           description: Created
@@ -63,12 +57,6 @@ paths:
             application/json:
               schema:
                 $ref: './common.yaml#/components/schemas/ProductId'
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authenticate
-          required: true
       requestBody:
         content:
           application/json:
@@ -105,6 +93,8 @@ paths:
     post:
       summary: Create an order
       operationId: post-orders
+      security:
+        - ApiKeyAuth: []
       responses:
         '201':
           description: Created
@@ -112,12 +102,6 @@ paths:
             application/json:
               schema:
                 $ref: './common.yaml#/components/schemas/OrderId'
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authenticate
-          required: true
       requestBody:
         content:
           application/json:
@@ -167,15 +151,11 @@ paths:
     post:
       summary: Update order details
       operationId: post-orders-id
+      security:
+        - ApiKeyAuth: []
       responses:
         '204':
           description: No Content
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authenticate
-          required: true
       requestBody:
         content:
           application/json:
@@ -184,12 +164,14 @@ paths:
     delete:
       summary: Cancel an order
       operationId: delete-orders-id
+      security:
+        - ApiKeyAuth: []
       responses:
         '204':
           description: No Content
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authenticate
-          required: true
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authenticate
