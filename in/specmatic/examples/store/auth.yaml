@@ -1,0 +1,28 @@
+openapi: 3.0.1
+info:
+  title: Petstore auth
+  version: "1"
+paths:
+  /auth:
+    post:
+      summary: Authentication
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - password
+              - username
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Authentication
+          content:
+            text/plain:
+              schema:
+                type: string
