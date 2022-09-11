@@ -44,7 +44,7 @@ paths:
         - ApiKeyAuth: []
       responses:
         '200':
-          description: No Content
+          description: Update successful
           content:
             text/plain:
               schema:
@@ -75,7 +75,7 @@ paths:
         - ApiKeyAuth: []
       responses:
         '200':
-          description: No Content
+          description: Deletion successful
           content:
             text/plain:
               schema:
@@ -287,7 +287,7 @@ paths:
         - ApiKeyAuth: []
       responses:
         '200':
-          description: No Content
+          description: Cancel successful
           content:
             text/plain:
               schema:
