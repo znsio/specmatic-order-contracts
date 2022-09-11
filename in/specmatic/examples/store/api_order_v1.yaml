@@ -32,6 +32,10 @@ paths:
               examples:
                 GET_DETAILS:
                   value:
+                    name: 'XYZ Phone'
+                    type: 'gadget'
+                    inventory: 10
+                    id: 10
       operationId: get-product-id
     post:
       summary: Update product details
@@ -48,6 +52,10 @@ paths:
               examples:
                 UPDATE_DETAILS:
                   value:
+                    name: 'XYZ Fone'
+                    type: 'gadget'
+                    inventory: 10
+                    id: 10
       requestBody:
         content:
           application/json:
@@ -118,8 +126,16 @@ paths:
               examples:
                 SEARCH_1:
                   value:
+                    - name: 'XYZ Fone'
+                      type: 'gadget'
+                      inventory: 10
+                      id: 3
                 SEARCH_2:
                   value:
+                    - name: 'XYZ Fone'
+                      type: 'gadget'
+                      inventory: 10
+                      id: 3
         '500':
           description: OK
           content:
@@ -188,6 +204,10 @@ paths:
               examples:
                 200_OK:
                   value:
+                    - productid: 10
+                      count: 2
+                      status: 'pending'
+                      id: 10
       parameters:
         - schema:
             type: number
@@ -227,6 +247,10 @@ paths:
               examples:
                 DETAILS:
                   value:
+                    productid: 10
+                    count: 2
+                    status: 'pending'
+                    id: 10
       operationId: get-orders-id
       parameters: []
     post:
