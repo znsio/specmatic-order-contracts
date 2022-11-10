@@ -29,3 +29,5 @@ jobs:
         run: |
           echo "One or more files in the docs folder has changed."
           echo "List all the files that have changed: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
+          chmod +x ./backward_compatibility.sh
+          ./backward_compatibility.sh
