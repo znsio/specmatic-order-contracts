@@ -11,10 +11,13 @@ components:
           $ref: '#/components/schemas/ProductType'
         inventory:
           type: integer
+        additionalMandatoryParameter:
+          type: string
       required:
         - name
         - type
         - inventory
+        - additionalMandatoryParameter
     ProductType:
       type: string
       title: Product Type
