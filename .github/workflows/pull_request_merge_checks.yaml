@@ -28,7 +28,7 @@ jobs:
           files: |
             in/**/*.yaml
       
-      - name: Install spectral
+      - name: Install Spectral Linter
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: npm install -g @stoplight/spectral-cli
 
