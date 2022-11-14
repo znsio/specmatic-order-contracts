@@ -17,17 +17,30 @@ jobs:
         with:
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
 
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
       - name: Get changed yaml files
         id: changed-files-specific
         uses: tj-actions/changed-files@v34
         with:
           files: |
             in/**/*.yaml
+      
+      - name: Install spectral
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        run: npm -g install spectral
+
+      - name: Run Spectral linter on changed files
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        run: |
+          echo "Running Spectral linter on: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
+          spectral lint **/*.yaml
 
       - name: Run backward compatibility check on changed files
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
-          echo "One or more files in the docs folder has changed."
-          echo "List all the files that have changed: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
+          echo "Running backward compatibility checks on: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
           chmod +x ./backward_compatibility.sh
           ./backward_compatibility.sh "${{ steps.changed-files-specific.outputs.all_changed_files }}"
