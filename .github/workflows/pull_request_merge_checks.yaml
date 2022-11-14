@@ -36,7 +36,7 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           echo "Running Spectral linter on: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
-          spectral lint **/*.yaml
+          spectral lint in/**/*.yaml
 
       - name: Run backward compatibility check on changed files
         if: steps.changed-files-specific.outputs.any_changed == 'true'
