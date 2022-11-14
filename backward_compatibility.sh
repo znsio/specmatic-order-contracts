@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cat "The files that changed: $1"
-#java -jar ./tools/specmatic.jar compatible git commits in/specmatic/examples/store/api_order_v1.yaml main HEAD
+echo "$1" | tr -s ' ' '\n' | xargs -I % java -jar ./tools/specmatic.jar compatible git commits % main HEAD

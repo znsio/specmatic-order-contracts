@@ -478,4 +478,3 @@ components:
       type: apiKey
       in: header
       name: Authenticate
-
