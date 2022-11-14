@@ -5,7 +5,7 @@ info:
 servers:
   - url: 'http://localhost:3000'
 paths:
-  '/products/{id}':
+  '/products/{id}/':
     parameters:
       - schema:
           type: number
