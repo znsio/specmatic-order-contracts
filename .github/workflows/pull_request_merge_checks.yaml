@@ -30,7 +30,7 @@ jobs:
       
       - name: Install spectral
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        run: npm -g install spectral
+        run: npm install -g @stoplight/spectral-cli
 
       - name: Run Spectral linter on changed files
         if: steps.changed-files-specific.outputs.any_changed == 'true'
