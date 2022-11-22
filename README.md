@@ -1,8 +1,6 @@
 # Central Contract Repository for the Order API
 
-## What is Central Contract Repository
-
-[Documentation Link](https://specmatic.in/documentation/central_contract_repository.html)
+## What is Central Contract Repository? [Documentation Link](https://specmatic.in/documentation/central_contract_repository.html)
 
 ---
 
