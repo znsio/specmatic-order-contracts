@@ -19,6 +19,8 @@ paths:
             value: 10
           DELETE_PRODUCT:
             value: 20
+          INVALID_ID:
+            value: "344"
     get:
       summary: Fetch product details
       tags: []
@@ -53,6 +55,28 @@ paths:
                     type: string
                   path:
                     type: string
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                  path:
+                    type: string
+              examples:
+                INVALID_ID:
+                  value:
+                    timestamp: "2023-03-17T12:06:56.177+00:00"
+                    status: 404
+                    error: "Not Found"
+                    path: "/products/344"
       operationId: get-product-id
     post:
       summary: Update product details
@@ -360,6 +384,8 @@ paths:
         examples:
           DETAILS:
             value: 10
+          INVALID_ID:
+            value: 433
     get:
       summary: Fetch order details
       tags: []
@@ -394,6 +420,28 @@ paths:
                     type: string
                   path:
                     type: string
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                  path:
+                    type: string
+              examples:
+                INVALID_ID:
+                  value:
+                    timestamp: "2023-03-17T12:06:56.177+00:00"
+                    status: 404
+                    error: "Not Found"
+                    path: "/orders/344"
       operationId: get-orders-id
       parameters: []
     post:
