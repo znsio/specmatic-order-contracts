@@ -38,6 +38,7 @@ paths:
                     type: 'gadget'
                     inventory: 10
                     id: 10
+                    additionalMandatory: 'additional'
         '400':
           description: 'Bad Request'
           content:
@@ -97,6 +98,7 @@ paths:
                     type: 'gadget'
                     inventory: 10
                     id: 10
+                    additionalMandatory: 'additional'
         '400':
           description: 'Bad Request'
           content:
@@ -126,6 +128,7 @@ paths:
                   type: 'gadget'
                   inventory: 10
                   id: 10
+                  additionalMandatory: 'additional'
     delete:
       summary: Delete a product
       operationId: delete-products-id
@@ -203,6 +206,7 @@ paths:
                   name: 'XYZ Laptop'
                   type: 'gadget'
                   inventory: 10
+                  additionalMandatory: 'additional'
     get:
       summary: Search for products
       operationId: get-products
@@ -532,10 +536,13 @@ components:
           $ref: '#/components/schemas/ProductType'
         inventory:
           type: integer
+        additionalMandatory:
+          type: string
       required:
         - name
         - type
         - inventory
+        - additionalMandatory
     ProductType:
       type: string
       title: Product Type
