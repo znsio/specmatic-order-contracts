@@ -32,6 +32,8 @@ paths:
                   value:
                     id: 1
                     name: 'XYZ Phone'
+                    type: 'gadget'
+                    inventory: 2
 components:
   schemas:
     Product:
@@ -42,6 +44,12 @@ components:
           type: string
         id:
           type: integer
+        type:
+          type: string
+        inventory:
+          type: integer
       required:
         - name
         - id
+        - type
+        - inventory
