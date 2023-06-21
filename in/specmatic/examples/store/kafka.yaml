@@ -1,0 +1,35 @@
+asyncapi: 2.6.0
+info:
+  title: Kafka Queue Example
+  version: '1.0.0'
+servers:
+  activemq:
+    url: tcp://localhost:61616
+    protocol: kafka
+channels:
+  test-topic:
+    publish:
+      operationId: publishObjectMessage
+      message:
+        bindings:
+          kafka:
+            key:
+              type: string
+            bindingVersion: '0.4.0'
+        payload:
+          $ref: "#/components/messages/Task"
+
+components:
+  messages:
+    Task:
+      name: Task
+      title: A Task to be processed
+      summary: Inform about a new user task in the system
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
