@@ -17,19 +17,14 @@ channels:
               type: string
             bindingVersion: '0.4.0'
         payload:
-          $ref: "#/components/messages/Task"
+          $ref: "#/components/messages/Email"
 
 components:
   messages:
-    Task:
-      name: Task
-      title: A Task to be processed
-      summary: Inform about a new user task in the system
-      contentType: application/json
+    Email:
+      name: Email
+      title: Email id to process
+      summary: Inform about a new email in the system
+      contentType: text/plain
       payload:
-        type: object
-        properties:
-          id:
-            type: integer
-          name:
-            type: string
+        type: string
