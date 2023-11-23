@@ -1,0 +1,8 @@
+components:
+  responses:
+    BadRequest:
+      description: "Bad Request"
+      content:
+        application/json:
+          schema:
+            $ref: "./common_response_schema.yaml#/components/schemas/BadRequestErrorResponseBody"

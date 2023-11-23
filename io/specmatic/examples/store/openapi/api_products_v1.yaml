@@ -1,0 +1,112 @@
+openapi: 3.0.1
+info:
+  title: Products API
+  version: v1
+  contact:
+    name: Products Sample Specifications
+    url: http://specmatic.io
+    email: developer@specmatic.io
+  description: API support
+servers:
+  - url: "http://localhost:8080"
+tags:
+  - name: Products
+    description: Operations related to products.
+paths:
+  "/products/{id}":
+    parameters:
+      - name: id
+        in: path
+        description: The unique identifier for the product.
+        required: true
+        schema:
+          type: number
+        examples:
+          200_UPDATE:
+            value: 1
+    put:
+      description: Update a product
+      tags:
+        - Products
+      operationId: updateProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ProductDetails"
+            examples:
+              200_UPDATE:
+                value:
+                  name: Artificial Lamp
+                  cost: 100
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Product"
+              examples:
+                200_UPDATE:
+                  $ref: "#/components/examples/200_UPDATE"
+  "/products":
+    post:
+      description: Add a new product
+      tags:
+        - Products
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ProductDetails"
+            examples:
+              200_ADD:
+                value:
+                  name: Wooden Sofa
+                  cost: 300
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Product"
+              examples:
+                200_ADD:
+                  $ref: "#/components/examples/200_ADD"
+components:
+  schemas:
+    Product:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/ProductId"
+        - $ref: "#/components/schemas/ProductDetails"
+    ProductDetails:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        cost:
+          type: integer
+          nullable: true
+    ProductId:
+      title: Product Id
+      type: object
+      properties:
+        id:
+          type: integer
+      required:
+        - id
+  examples:
+    200_UPDATE:
+      value:
+        id: 1
+        name: Artificial Lamp
+        cost: 100
+    200_ADD:
+      value:
+        id: 2
+        name: Wooden Sofa
+        cost: 300
