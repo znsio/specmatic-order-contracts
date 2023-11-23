@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Check API Contracts
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Get changed yaml files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v34
+        with:
+          files: |
+            in/**/*.yaml
+          files_ignore: kafka.yaml #skipping it as async is under private-beta
+      
+      - name: Install Spectral Linter
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        run: npm install -g @stoplight/spectral-cli
+
+      - name: Run Spectral linter on changed files
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        run: |
+          echo "Running Spectral linter on: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
+          spectral lint in/**/*.yaml
+      
+      - name: Setup specmatic
+        uses: airslate-oss/setup-specmatic@v1
+        with:
+          specmatic-version: 0.59.0
+
+      - name: Run backward compatibility check on changed files
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        run: |
+          echo "Running backward compatibility checks on: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
+          echo "${{ steps.changed-files-specific.outputs.all_changed_files }}" | tr -s ' ' '\n' | xargs -I % specmatic compatible git commits % main HEAD

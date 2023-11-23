@@ -1,0 +1,87 @@
+openapi: 3.0.0
+info:
+  title: Common schema
+  version: '1.0'
+paths: {}
+components:
+  schemas:
+    ProductDetails:
+      title: Product Details
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ProductType'
+        inventory:
+          type: integer
+      required:
+        - name
+        - type
+        - inventory
+    ProductType:
+      type: string
+      title: Product Type
+      enum:
+        - book
+        - food
+        - gadget
+        - other
+    ProductId:
+      title: Product Id
+      type: object
+      properties:
+        id:
+          type: integer
+      required:
+        - id
+    Product:
+      title: Product
+      allOf:
+        - $ref: '#/components/schemas/ProductId'
+        - $ref: '#/components/schemas/ProductDetails'
+    OrderDetails:
+      title: Order Details
+      type: object
+      properties:
+        productid:
+          type: integer
+        count:
+          type: integer
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+      required:
+        - productid
+        - count
+        - status
+    OrderStatus:
+      type: string
+      title: OrderStatus
+      enum:
+        - fulfilled
+        - pending
+        - cancelled
+    OrderId:
+      title: Order Id
+      type: object
+      properties:
+        id:
+          type: integer
+      required:
+        - id
+    Order:
+      title: Order
+      allOf:
+        - $ref: '#/components/schemas/OrderId'
+        - $ref: '#/components/schemas/OrderDetails'
+  parameters:
+    OrderStatusParam:
+      name: OrderStatusParam
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - fulfilled
+          - pending
+          - cancelled
