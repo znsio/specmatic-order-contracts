@@ -1,0 +1,119 @@
+openapi: 3.0.0
+info:
+  title: Order API
+  version: '1.0'
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  '/products':
+    summary: Create a new product
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - type
+                - inventory
+              properties:
+                name:
+                  type: string
+                type:
+                  type: string
+                  enum:
+                    - gadget
+                    - book
+                    - food
+                    - other
+                inventory:
+                  type: integer
+      responses:
+        '201':
+          description: Product created
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: integer
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: string
+    
+  '/findAvailableProducts':
+    parameters:
+      - schema:
+          type: string
+        name: type
+        in: query
+        required: true
+        examples:
+          GET_DETAILS:
+            value: 'gadget'
+    get:
+      summary: Fetch product details
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+              examples:
+                GET_DETAILS:
+                  value:
+                    id: 1
+                    name: 'XYZ Phone'
+                    type: 'gadget'
+                    inventory: 2
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+components:
+  schemas:
+    Product:
+      title: Product Details
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: integer
+        type:
+          type: string
+        inventory:
+          type: integer
+      required:
+        - name
+        - id
+        - type
+        - inventory
