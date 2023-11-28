@@ -61,9 +61,6 @@ paths:
         name: type
         in: query
         required: true
-        examples:
-          GET_DETAILS:
-            value: 'gadget'
     get:
       summary: Fetch product details
       responses:
@@ -75,13 +72,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
-              examples:
-                GET_DETAILS:
-                  value:
-                    id: 1
-                    name: 'XYZ Phone'
-                    type: 'gadget'
-                    inventory: 2
         '400':
           description: Bad Request
           content:
