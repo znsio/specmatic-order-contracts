@@ -88,6 +88,45 @@ paths:
             application/json:
               schema:
                 type: string
+  /ordres:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - productid
+                - count
+              properties:
+                productid:
+                  type: integer
+                count:
+                  type: integer
+      responses:
+        '201':
+          description: Order created
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: integer
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: string
 components:
   schemas:
     Product:
