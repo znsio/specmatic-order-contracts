@@ -47,12 +47,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequest'
-        '500':
-          description: Internal Server Error
+        '503':
+          description: Timeout
           content:
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/BadRequest'
   /findAvailableProducts:
     parameters:
       - schema:
@@ -82,12 +82,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequest'
-        '500':
-          description: Internal Server Error
+        '503':
+          description: Timeout
           content:
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/BadRequest'
   /ordres:
     post:
       requestBody:
@@ -121,12 +121,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequest'
-        '500':
-          description: Internal Server Error
+        '503':
+          description: Timeout
           content:
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/BadRequest'
 components:
   schemas:
     Product:
