@@ -3,9 +3,9 @@ info:
   title: Order API
   version: '1.0'
 servers:
-  - url: 'http://localhost:8080'
+  - url: http://localhost:8080
 paths:
-  '/products':
+  /products:
     summary: Create a new product
     post:
       requestBody:
@@ -46,20 +46,23 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/BadRequest'
         '500':
           description: Internal Server Error
           content:
             application/json:
               schema:
                 type: string
-    
-  '/findAvailableProducts':
+  /findAvailableProducts:
     parameters:
       - schema:
           type: string
         name: type
         in: query
+      - name: pageSize
+        in: header
+        schema:
+          type: integer
         required: true
     get:
       summary: Fetch product details
@@ -102,8 +105,22 @@ components:
           type: string
         inventory:
           type: integer
+        description:
+          type: string
       required:
         - name
         - id
         - type
         - inventory
+    BadRequest:
+      title: Bad Request
+      type: object
+      properties:
+        timestamp:
+          type: string
+        status:
+          type: number
+        error:
+          type: string
+        path:
+          type: string
