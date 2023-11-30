@@ -374,7 +374,6 @@ components:
             - book
             - food
             - other
-
         inventory:
           type: number
     Products_ResponseBody:
