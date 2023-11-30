@@ -67,11 +67,6 @@ paths:
     parameters:
       - schema:
           type: string
-          enum:
-            - gadget
-            - book
-            - food
-            - other
         name: type
         in: query
         required: false
