@@ -1,0 +1,430 @@
+openapi: 3.0.1
+info:
+  title: Order API
+  version: '2.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /products:
+    get:
+      summary: GET Products based on type
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum:
+              - gadget
+              - book
+              - food
+              - other
+        - name: Accept
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: User-Agent
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Host
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Connection
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of products in the response
+          headers:
+            X-Content-Type-Options:
+              required: true
+              schema:
+                type: string
+            X-XSS-Protection:
+              required: true
+              schema:
+                type: string
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+            Pragma:
+              required: true
+              schema:
+                type: string
+            Expires:
+              required: true
+              schema:
+                type: number
+            X-Frame-Options:
+              required: true
+              schema:
+                type: string
+            Transfer-Encoding:
+              required: true
+              schema:
+                type: string
+            Date:
+              required: true
+              schema:
+                type: string
+            Keep-Alive:
+              required: true
+              schema:
+                type: string
+            Connection:
+              required: true
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResponseBody'
+    post:
+      summary: POST /products
+      parameters:
+        - name: Accept
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Authenticate
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: User-Agent
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Host
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Connection
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Transfer-Encoding
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Products_RequestBody'
+      responses:
+        "200":
+          description: POST /products
+          headers:
+            X-Content-Type-Options:
+              required: true
+              schema:
+                type: string
+            X-XSS-Protection:
+              required: true
+              schema:
+                type: string
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+            Pragma:
+              required: true
+              schema:
+                type: string
+            Expires:
+              required: true
+              schema:
+                type: number
+            X-Frame-Options:
+              required: true
+              schema:
+                type: string
+            Transfer-Encoding:
+              required: true
+              schema:
+                type: string
+            Date:
+              required: true
+              schema:
+                type: string
+            Keep-Alive:
+              required: true
+              schema:
+                type: string
+            Connection:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products_ResponseBody'
+        "400":
+          description: POST /products
+          headers:
+            X-Content-Type-Options:
+              required: true
+              schema:
+                type: string
+            X-XSS-Protection:
+              required: true
+              schema:
+                type: string
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+            Pragma:
+              required: true
+              schema:
+                type: string
+            Expires:
+              required: true
+              schema:
+                type: number
+            X-Frame-Options:
+              required: true
+              schema:
+                type: string
+            Transfer-Encoding:
+              required: true
+              schema:
+                type: string
+            Date:
+              required: true
+              schema:
+                type: string
+            Connection:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products_ResponseBody'
+  /orders:
+    post:
+      summary: POST /orders
+      parameters:
+        - name: Accept
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Authenticate
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: User-Agent
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Host
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Connection
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Transfer-Encoding
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Orders_RequestBody'
+      responses:
+        "200":
+          description: POST /orders
+          headers:
+            X-Content-Type-Options:
+              required: true
+              schema:
+                type: string
+            X-XSS-Protection:
+              required: true
+              schema:
+                type: string
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+            Pragma:
+              required: true
+              schema:
+                type: string
+            Expires:
+              required: true
+              schema:
+                type: number
+            X-Frame-Options:
+              required: true
+              schema:
+                type: string
+            Transfer-Encoding:
+              required: true
+              schema:
+                type: string
+            Date:
+              required: true
+              schema:
+                type: string
+            Keep-Alive:
+              required: true
+              schema:
+                type: string
+            Connection:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders_ResponseBody'
+        "400":
+          description: POST /orders
+          headers:
+            X-Content-Type-Options:
+              required: true
+              schema:
+                type: string
+            X-XSS-Protection:
+              required: true
+              schema:
+                type: string
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+            Pragma:
+              required: true
+              schema:
+                type: string
+            Expires:
+              required: true
+              schema:
+                type: number
+            X-Frame-Options:
+              required: true
+              schema:
+                type: string
+            Transfer-Encoding:
+              required: true
+              schema:
+                type: string
+            Date:
+              required: true
+              schema:
+                type: string
+            Connection:
+              required: true
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders_ResponseBody'
+components:
+  schemas:
+    Products_RequestBody:
+      required:
+        - inventory
+        - name
+        - type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - gadget
+            - book
+            - food
+            - other
+
+        inventory:
+          type: number
+    Products_ResponseBody:
+      properties:
+        id:
+          type: number
+        timestamp:
+          type: string
+        status:
+          type: number
+        error:
+          type: string
+        message:
+          type: string
+    ResponseBody:
+      required:
+        - id
+        - inventory
+        - name
+        - type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        inventory:
+          type: number
+        id:
+          type: number
+    Orders_RequestBody:
+      required:
+        - count
+        - productid
+        - status
+      properties:
+        productid:
+          type: number
+        count:
+          type: number
+        status:
+          type: string
+    Orders_ResponseBody:
+      properties:
+        id:
+          type: number
+        timestamp:
+          type: string
+        status:
+          type: number
+        error:
+          type: string
+        message:
+          type: string
