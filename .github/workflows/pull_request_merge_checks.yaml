@@ -48,4 +48,4 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           echo "Running backward compatibility checks on: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
-          echo "${{ steps.changed-files-specific.outputs.all_changed_files }}" | tr -s ' ' '\n' | xargs -I % specmatic compatible git commits % main HEAD
+          echo "${{ steps.changed-files-specific.outputs.all_changed_files }}" | tr -s ' ' '\n' | xargs -I % specmatic compatible git commits % HEAD main
