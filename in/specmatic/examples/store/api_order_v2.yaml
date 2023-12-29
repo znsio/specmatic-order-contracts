@@ -23,9 +23,65 @@ paths:
           required: true
           schema:
             type: string
+        - name: User-Agent
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Host
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Connection
+          in: header
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: List of products in the response
+          headers:
+            X-Content-Type-Options:
+              required: true
+              schema:
+                type: string
+            X-XSS-Protection:
+              required: true
+              schema:
+                type: string
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+            Pragma:
+              required: true
+              schema:
+                type: string
+            Expires:
+              required: true
+              schema:
+                type: number
+            X-Frame-Options:
+              required: true
+              schema:
+                type: string
+            Transfer-Encoding:
+              required: true
+              schema:
+                type: string
+            Date:
+              required: true
+              schema:
+                type: string
+            Keep-Alive:
+              required: true
+              schema:
+                type: string
+            Connection:
+              required: true
+              schema:
+                type: string
           content:
             text/plain:
               schema:
@@ -50,6 +106,26 @@ paths:
           required: true
           schema:
             type: string
+        - name: User-Agent
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Host
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Connection
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Transfer-Encoding
+          in: header
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -58,12 +134,90 @@ paths:
       responses:
         "200":
           description: POST /products
+          headers:
+            X-Content-Type-Options:
+              required: true
+              schema:
+                type: string
+            X-XSS-Protection:
+              required: true
+              schema:
+                type: string
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+            Pragma:
+              required: true
+              schema:
+                type: string
+            Expires:
+              required: true
+              schema:
+                type: number
+            X-Frame-Options:
+              required: true
+              schema:
+                type: string
+            Transfer-Encoding:
+              required: true
+              schema:
+                type: string
+            Date:
+              required: true
+              schema:
+                type: string
+            Keep-Alive:
+              required: true
+              schema:
+                type: string
+            Connection:
+              required: true
+              schema:
+                type: string
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Products_ResponseBody'
         "400":
           description: POST /products
+          headers:
+            X-Content-Type-Options:
+              required: true
+              schema:
+                type: string
+            X-XSS-Protection:
+              required: true
+              schema:
+                type: string
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+            Pragma:
+              required: true
+              schema:
+                type: string
+            Expires:
+              required: true
+              schema:
+                type: number
+            X-Frame-Options:
+              required: true
+              schema:
+                type: string
+            Transfer-Encoding:
+              required: true
+              schema:
+                type: string
+            Date:
+              required: true
+              schema:
+                type: string
+            Connection:
+              required: true
+              schema:
+                type: string
           content:
             application/json:
               schema:
@@ -87,6 +241,26 @@ paths:
           required: true
           schema:
             type: string
+        - name: User-Agent
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Host
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Connection
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: Transfer-Encoding
+          in: header
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -95,12 +269,90 @@ paths:
       responses:
         "200":
           description: POST /orders
+          headers:
+            X-Content-Type-Options:
+              required: true
+              schema:
+                type: string
+            X-XSS-Protection:
+              required: true
+              schema:
+                type: string
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+            Pragma:
+              required: true
+              schema:
+                type: string
+            Expires:
+              required: true
+              schema:
+                type: number
+            X-Frame-Options:
+              required: true
+              schema:
+                type: string
+            Transfer-Encoding:
+              required: true
+              schema:
+                type: string
+            Date:
+              required: true
+              schema:
+                type: string
+            Keep-Alive:
+              required: true
+              schema:
+                type: string
+            Connection:
+              required: true
+              schema:
+                type: string
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Orders_ResponseBody'
         "400":
           description: POST /orders
+          headers:
+            X-Content-Type-Options:
+              required: true
+              schema:
+                type: string
+            X-XSS-Protection:
+              required: true
+              schema:
+                type: string
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+            Pragma:
+              required: true
+              schema:
+                type: string
+            Expires:
+              required: true
+              schema:
+                type: number
+            X-Frame-Options:
+              required: true
+              schema:
+                type: string
+            Transfer-Encoding:
+              required: true
+              schema:
+                type: string
+            Date:
+              required: true
+              schema:
+                type: string
+            Connection:
+              required: true
+              schema:
+                type: string
           content:
             application/json:
               schema:
@@ -175,9 +427,3 @@ components:
           type: string
         message:
           type: string
-
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authenticate
