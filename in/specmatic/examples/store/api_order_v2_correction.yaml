@@ -200,11 +200,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authenticate
-          in: header
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -235,11 +230,6 @@ paths:
           schema:
             type: string
         - name: Content-Type
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: Authenticate
           in: header
           required: true
           schema:
