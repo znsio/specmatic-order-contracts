@@ -5,6 +5,159 @@ info:
 servers:
   - url: 'http://localhost:3000'
 paths:
+  '/products/{id}':
+    parameters:
+      - schema:
+          type: number
+        name: id
+        in: path
+        required: true
+        examples:
+          GET_DETAILS:
+            value: 10
+          UPDATE_DETAILS:
+            value: 10
+          DELETE_PRODUCT:
+            value: 20
+          INVALID_ID:
+            value: "344"
+    get:
+      summary: Fetch product details
+      tags: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './common.yaml#/components/schemas/Product'
+              examples:
+                GET_DETAILS:
+                  value:
+                    name: 'XYZ Phone'
+                    type: 'gadget'
+                    inventory: 10
+                    id: 10
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  path:
+                    type: string
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                  path:
+                    type: string
+              examples:
+                INVALID_ID:
+                  value:
+                    timestamp: "2023-03-17T12:06:56.177+00:00"
+                    status: 404
+                    error: "Not Found"
+                    path: "/products/344"
+      operationId: get-product-id
+    post:
+      summary: Update product details
+      operationId: post-products-id
+      security:
+        - ApiKeyAuth: [ ]
+      responses:
+        '200':
+          description: Update successful
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                UPDATE_DETAILS:
+                  value:
+                    name: 'XYZ Fone'
+                    type: 'gadget'
+                    inventory: 10
+                    id: 10
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  path:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './common.yaml#/components/schemas/Product'
+            examples:
+              UPDATE_DETAILS:
+                value:
+                  name: 'XYZ Fone'
+                  type: 'gadget'
+                  inventory: 10
+                  id: 10
+    delete:
+      summary: Delete a product
+      operationId: delete-products-id
+      security:
+        - ApiKeyAuth: [ ]
+      responses:
+        '200':
+          description: Deletion successful
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                DELETE_PRODUCT:
+                  value: ''
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  path:
+                    type: string
   /products:
     get:
       summary: GET Products based on type
@@ -18,70 +171,9 @@ paths:
               - book
               - food
               - other
-        - name: Accept
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: User-Agent
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: Host
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: Connection
-          in: header
-          required: true
-          schema:
-            type: string
       responses:
         "200":
           description: List of products in the response
-          headers:
-            X-Content-Type-Options:
-              required: true
-              schema:
-                type: string
-            X-XSS-Protection:
-              required: true
-              schema:
-                type: string
-            Cache-Control:
-              required: true
-              schema:
-                type: string
-            Pragma:
-              required: true
-              schema:
-                type: string
-            Expires:
-              required: true
-              schema:
-                type: number
-            X-Frame-Options:
-              required: true
-              schema:
-                type: string
-            Transfer-Encoding:
-              required: true
-              schema:
-                type: string
-            Date:
-              required: true
-              schema:
-                type: string
-            Keep-Alive:
-              required: true
-              schema:
-                type: string
-            Connection:
-              required: true
-              schema:
-                type: string
           content:
             text/plain:
               schema:
@@ -90,42 +182,8 @@ paths:
                   $ref: '#/components/schemas/ResponseBody'
     post:
       summary: POST /products
-      parameters:
-        - name: Accept
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: Content-Type
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: Authenticate
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: User-Agent
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: Host
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: Connection
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: Transfer-Encoding
-          in: header
-          required: true
-          schema:
-            type: string
+      security:
+        - ApiKeyAuth: [ ]
       requestBody:
         content:
           application/json:
@@ -134,90 +192,12 @@ paths:
       responses:
         "200":
           description: POST /products
-          headers:
-            X-Content-Type-Options:
-              required: true
-              schema:
-                type: string
-            X-XSS-Protection:
-              required: true
-              schema:
-                type: string
-            Cache-Control:
-              required: true
-              schema:
-                type: string
-            Pragma:
-              required: true
-              schema:
-                type: string
-            Expires:
-              required: true
-              schema:
-                type: number
-            X-Frame-Options:
-              required: true
-              schema:
-                type: string
-            Transfer-Encoding:
-              required: true
-              schema:
-                type: string
-            Date:
-              required: true
-              schema:
-                type: string
-            Keep-Alive:
-              required: true
-              schema:
-                type: string
-            Connection:
-              required: true
-              schema:
-                type: string
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Products_ResponseBody'
         "400":
           description: POST /products
-          headers:
-            X-Content-Type-Options:
-              required: true
-              schema:
-                type: string
-            X-XSS-Protection:
-              required: true
-              schema:
-                type: string
-            Cache-Control:
-              required: true
-              schema:
-                type: string
-            Pragma:
-              required: true
-              schema:
-                type: string
-            Expires:
-              required: true
-              schema:
-                type: number
-            X-Frame-Options:
-              required: true
-              schema:
-                type: string
-            Transfer-Encoding:
-              required: true
-              schema:
-                type: string
-            Date:
-              required: true
-              schema:
-                type: string
-            Connection:
-              required: true
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -225,42 +205,8 @@ paths:
   /orders:
     post:
       summary: POST /orders
-      parameters:
-        - name: Accept
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: Content-Type
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: Authenticate
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: User-Agent
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: Host
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: Connection
-          in: header
-          required: true
-          schema:
-            type: string
-        - name: Transfer-Encoding
-          in: header
-          required: true
-          schema:
-            type: string
+      security:
+        - ApiKeyAuth: [ ]
       requestBody:
         content:
           application/json:
@@ -269,94 +215,214 @@ paths:
       responses:
         "200":
           description: POST /orders
-          headers:
-            X-Content-Type-Options:
-              required: true
-              schema:
-                type: string
-            X-XSS-Protection:
-              required: true
-              schema:
-                type: string
-            Cache-Control:
-              required: true
-              schema:
-                type: string
-            Pragma:
-              required: true
-              schema:
-                type: string
-            Expires:
-              required: true
-              schema:
-                type: number
-            X-Frame-Options:
-              required: true
-              schema:
-                type: string
-            Transfer-Encoding:
-              required: true
-              schema:
-                type: string
-            Date:
-              required: true
-              schema:
-                type: string
-            Keep-Alive:
-              required: true
-              schema:
-                type: string
-            Connection:
-              required: true
-              schema:
-                type: string
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Orders_ResponseBody'
         "400":
           description: POST /orders
-          headers:
-            X-Content-Type-Options:
-              required: true
-              schema:
-                type: string
-            X-XSS-Protection:
-              required: true
-              schema:
-                type: string
-            Cache-Control:
-              required: true
-              schema:
-                type: string
-            Pragma:
-              required: true
-              schema:
-                type: string
-            Expires:
-              required: true
-              schema:
-                type: number
-            X-Frame-Options:
-              required: true
-              schema:
-                type: string
-            Transfer-Encoding:
-              required: true
-              schema:
-                type: string
-            Date:
-              required: true
-              schema:
-                type: string
-            Connection:
-              required: true
-              schema:
-                type: string
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Orders_ResponseBody'
+    get:
+      summary: Search for orders
+      operationId: get-orders
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './common.yaml#/components/schemas/Order'
+              examples:
+                200_OK:
+                  value:
+                    - productid: 10
+                      count: 2
+                      status: 'pending'
+                      id: 10
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  path:
+                    type: string
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: productid
+          examples:
+            200_OK:
+              value: 10
+        - schema:
+            type: string
+          in: query
+          name: status
+          examples:
+            200_OK:
+              value: fulfilled
+      description: ''
+  '/orders/{id}':
+    parameters:
+      - schema:
+          type: number
+        name: id
+        in: path
+        required: true
+        examples:
+          DETAILS:
+            value: 10
+          INVALID_ID:
+            value: 433
+    get:
+      summary: Fetch order details
+      tags: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './common.yaml#/components/schemas/Order'
+              examples:
+                DETAILS:
+                  value:
+                    productid: 10
+                    count: 2
+                    status: 'pending'
+                    id: 10
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  path:
+                    type: string
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                  path:
+                    type: string
+              examples:
+                INVALID_ID:
+                  value:
+                    timestamp: "2023-03-17T12:06:56.177+00:00"
+                    status: 404
+                    error: "Not Found"
+                    path: "/orders/344"
+      operationId: get-orders-id
+      parameters: [ ]
+    post:
+      summary: Update order details
+      operationId: post-orders-id
+      security:
+        - ApiKeyAuth: [ ]
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                UPDATE_ORDER:
+                  value:
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  path:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './common.yaml#/components/schemas/Order'
+            examples:
+              UPDATE_ORDER:
+                value:
+                  productid: 10
+                  id: 10
+                  count: 1
+                  status: pending
+    delete:
+      summary: Cancel an order
+      operationId: delete-orders-id
+      security:
+        - ApiKeyAuth: [ ]
+      responses:
+        '200':
+          description: Cancel successful
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                DELETE_ORDER:
+                  value:
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  path:
+                    type: string
 components:
   schemas:
     Products_RequestBody:
@@ -427,3 +493,9 @@ components:
           type: string
         message:
           type: string
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authenticate
