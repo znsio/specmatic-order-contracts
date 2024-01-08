@@ -171,11 +171,6 @@ paths:
               - book
               - food
               - other
-        - name: Accept
-          in: header
-          required: true
-          schema:
-            type: string
       responses:
         "200":
           description: List of products in the response
