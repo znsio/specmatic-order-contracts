@@ -56,7 +56,7 @@ paths:
                     timestamp: "2023-03-17T12:06:56.177+00:00"
                     status: 404
                     error: "Not Found"
-                    path: "Product with id 344 was not found"
+                    message: "Not found"
       operationId: get-product-id
     post:
       summary: Update product details
@@ -182,9 +182,6 @@ paths:
               examples:
                 CREATE_ORDER:
                   value:
-                    productid: 10
-                    count: 2
-                    status: pending
                     id: 10
         "400":
           description: POST /orders
