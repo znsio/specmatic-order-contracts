@@ -92,11 +92,7 @@ paths:
                 type: string
               examples:
                 UPDATE_DETAILS:
-                  value:
-                    name: 'XYZ Fone'
-                    type: 'gadget'
-                    inventory: 10
-                    id: 10
+                  value: success
         '400':
           description: 'Bad Request'
           content:
