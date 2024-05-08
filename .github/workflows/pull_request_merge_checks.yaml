@@ -33,6 +33,8 @@ jobs:
         with:
           files: |
             in/**/*.yaml
+            in/**/*.yml
+            in/**/*.json
           files_ignore: kafka.yaml #skipping it as async is under private-beta
       
       - name: Install Spectral Linter
