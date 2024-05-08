@@ -41,10 +41,6 @@ jobs:
       
       - name: backward compatibility check
         run: |
-          ls -al
-          echo "printing diff using command explicitly"
-          git diff origin/main HEAD --name-only
-          echo "accessing diff using specmatic.jar"
           java -jar specmatic.jar backwardCompatibilityCheck    
 
       - name: checkout
