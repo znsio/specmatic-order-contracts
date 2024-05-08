@@ -23,6 +23,12 @@ jobs:
         with:
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
       
+      - name: backward compatibility check
+        run: |
+          ls -al
+          echo
+          java -jar specmatic.jar backwardCompatibilityCheck
+
       - name: Export
         run: |
           export 
