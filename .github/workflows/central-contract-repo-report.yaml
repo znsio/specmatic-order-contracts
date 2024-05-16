@@ -33,8 +33,10 @@ jobs:
         working-directory: .
         run: npx specmatic-insights-github-build-reporter --specmatic-insights-host https://insights.specmatic.in --specmatic-central-repo-report ./build/reports/specmatic/central_contract_repo_report.json
         env:
-          GITHUB_ORG_ID: ${{ secrets.SPECMATIC_ORG_ID }}
+          SPECMATIC_ORG_ID: ${{ secrets.SPECMATIC_ORG_ID }}
           GITHUB_TOKEN: ${{ secrets.SPECMATIC_INSIGHTS_ACCESS_TOKEN }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
