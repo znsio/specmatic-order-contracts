@@ -16,7 +16,7 @@ Response
 
 ```json
 {
-  "id": 10,
+  "id": "10",
   "name": "The Almanac",
   "inventory": 10,
   "type": "book"

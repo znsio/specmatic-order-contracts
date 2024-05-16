@@ -12,13 +12,13 @@ Response
 ```json
 [
   {
-    "id": 10,
+    "id": "10",
     "name": "The Almanac",
     "inventory": 10,
     "type": "book"
   },
   {
-    "id": 20,
+    "id": "20",
     "name": "iPhone",
     "inventory": 15,
     "type": "gadget"
