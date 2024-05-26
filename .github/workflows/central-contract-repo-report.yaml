@@ -27,10 +27,7 @@ jobs:
         run: specmatic central-contract-repo-report
 
       - name: Run Specmatic Insights Github Build Reporter
-        uses: znsio/specmatic-insights-build-reporter-github-action@v1.0.12
-        with:
-          specmatic-insights-host: https://insights.specmatic.in 
-          specmatic-reports-dir: ./build/reports/specmatic
+        uses: znsio/specmatic-insights-build-reporter-github-action@v1.1.1
         env:
           SPECMATIC_ORG_ID: ${{ secrets.SPECMATIC_ORG_ID }}
           GITHUB_TOKEN: ${{ secrets.SPECMATIC_INSIGHTS_ACCESS_TOKEN }}
