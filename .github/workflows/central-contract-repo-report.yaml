@@ -31,9 +31,6 @@ jobs:
       - name: Generate central contract repo report
         run: specmatic central-contract-repo-report
 
-      - name: Install dependencies
-        run: npm install
-
       - name: Run Specmatic Insights Github Build Reporter
         uses: znsio/specmatic-insights-build-reporter-github-action@v1
         with:
