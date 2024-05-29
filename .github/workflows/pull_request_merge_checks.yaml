@@ -46,5 +46,5 @@ jobs:
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
             --entrypoint /bin/sh znsio/specmatic \
-            -c "cd /central-contract-repo && java -jar /usr/src/app/specmatic.jar backwardCompatibilityCheck"
+            -c "git config --global --add safe.directory /central-contract-repo && cd /central-contract-repo && java -jar /usr/src/app/specmatic.jar backwardCompatibilityCheck"
 
