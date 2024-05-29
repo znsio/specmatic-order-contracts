@@ -40,11 +40,22 @@ jobs:
         run: |
           echo "Running Spectral linter on: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
           spectral lint in/**/*.yaml
-    
+      
+      - name: Create environment file
+        run: |
+            echo "GITHUB_REF=${{ github.ref }}" >> env.list
+            echo "GITHUB_SHA=${{ github.sha }}" >> env.list
+            echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
+            echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
+            echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
+            echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
+            echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
+
       - name: Run backward compatibility check on changed files
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
+            --env-file env.list \
             --entrypoint /bin/sh znsio/specmatic \
             -c "git config --global --add safe.directory /central-contract-repo && cd /central-contract-repo && java -jar /usr/src/app/specmatic.jar backwardCompatibilityCheck"
 
