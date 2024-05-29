@@ -16,11 +16,12 @@ components:
         inventory:
           type: integer
         description:
-          type: string
+          type: integer 
       required:
         - name
         - type
         - inventory
+        - description
     ProductType:
       type: string
       title: Product Type
