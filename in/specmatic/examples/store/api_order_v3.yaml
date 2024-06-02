@@ -39,11 +39,7 @@ paths:
                     inventory: 10
                     id: 10
         "400":
-          description: "Bad Request"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseBody"
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
         "404":
           description: "Not Found"
           content:
@@ -74,11 +70,7 @@ paths:
                 UPDATE_DETAILS:
                   value: "success"
         "400":
-          description: "Bad Request"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseBody"
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
       requestBody:
         content:
           application/json:
@@ -107,11 +99,7 @@ paths:
                 DELETE_PRODUCT:
                   value: "success"
         "400":
-          description: "Bad Request"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseBody"
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
   /products:
     get:
       summary: GET Products based on type
@@ -151,11 +139,7 @@ paths:
               schema:
                 $ref: "common.yaml#/components/schemas/ProductId"
         "400":
-          description: POST /products
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseBody"
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
   /orders:
     post:
       summary: POST /orders
@@ -184,11 +168,7 @@ paths:
                   value:
                     id: 10
         "400":
-          description: POST /orders
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseBody"
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
     get:
       summary: Search for orders
       operationId: get-orders
@@ -209,11 +189,7 @@ paths:
                       status: "pending"
                       id: 10
         "400":
-          description: "Bad Request"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseBody"
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
       parameters:
         - schema:
             type: number
@@ -260,11 +236,7 @@ paths:
                     status: "pending"
                     id: 10
         "400":
-          description: "Bad Request"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseBody"
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
         "404":
           description: "Not Found"
           content:
@@ -296,11 +268,7 @@ paths:
                 UPDATE_ORDER:
                   value: "success"
         "400":
-          description: "Bad Request"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseBody"
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
       requestBody:
         content:
           application/json:
@@ -329,11 +297,7 @@ paths:
                 DELETE_ORDER:
                   value: "success"
         "400":
-          description: "Bad Request"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseBody"
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
 components:
   schemas:
     Products_RequestBody:
