@@ -1,0 +1,17 @@
+openapi: 3.0.0
+info:
+  title: Common schema
+  version: '1.0'
+paths: {}
+components:
+  schemas:
+    BadRequestErrorResponseBody:
+      properties:
+        timestamp:
+          type: string
+        status:
+          type: number
+        error:
+          type: string
+        message:
+          type: string

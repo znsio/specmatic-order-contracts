@@ -10,4 +10,4 @@ components:
       content:
         application/json:
           schema:
-            $ref: "./common.yaml#/components/schemas/BadRequestErrorResponseBody"
+            $ref: "./common_response_schema.yaml#/components/schemas/BadRequestErrorResponseBody"

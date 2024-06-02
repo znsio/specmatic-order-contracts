@@ -74,16 +74,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/OrderId'
         - $ref: '#/components/schemas/OrderDetails'
-    BadRequestErrorResponseBody:
-      properties:
-        timestamp:
-          type: string
-        status:
-          type: number
-        error:
-          type: string
-        message:
-          type: string
   parameters:
     OrderStatusParam:
       name: OrderStatusParam
