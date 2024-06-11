@@ -7,9 +7,9 @@ servers:
 paths:
   "/products/{id}":
     parameters:
-      - schema:
+      - name: id
+        schema:
           type: number
-        name: id
         in: path
         required: true
         examples:
@@ -107,7 +107,7 @@ paths:
         - name: type
           in: query
           schema:
-            $ref: "common.yaml#/components/schemas/ProductType"
+            $ref: "./common.yaml#/components/schemas/ProductType"
       responses:
         "200":
           description: List of products in the response
@@ -186,10 +186,10 @@ paths:
         "400":
           $ref: "./common_responses.yaml#/components/responses/BadRequest"
       parameters:
-        - schema:
-            type: number
+        - name: productid
           in: query
-          name: productid
+          schema:
+            type: number
           examples:
             200_OK:
               value: 10
@@ -197,11 +197,6 @@ paths:
           in: query
           schema:
             type: string
-            enum:
-            - book
-            - food
-            - gadget
-            - other
           examples:
             200_OK:
               value: fulfilled
