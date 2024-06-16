@@ -1,11 +1,11 @@
 openapi: 3.0.1
 info:
   title: Order API
-  version: '2.0'
+  version: "2.0"
 servers:
-  - url: 'http://localhost:3000'
+  - url: "http://localhost:3000"
 paths:
-  '/products/{id}':
+  "/products/{id}":
     parameters:
       - schema:
           type: number
@@ -23,46 +23,42 @@ paths:
             value: "344"
     get:
       summary: Fetch product details
-      tags: [ ]
+      tags: []
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: './common.yaml#/components/schemas/Product'
+                $ref: "./common.yaml#/components/schemas/Product"
               examples:
                 GET_DETAILS:
                   value:
-                    name: 'XYZ Phone'
-                    type: 'gadget'
+                    name: "XYZ Phone"
+                    type: "gadget"
                     inventory: 10
                     id: 10
-        '400':
-          description: 'Bad Request'
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
+        "404":
+          description: "Not Found"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '404':
-          description: 'Not Found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
+                $ref: "#/components/schemas/ErrorResponseBody"
               examples:
                 INVALID_ID:
                   value:
                     timestamp: "2023-03-17T12:06:56.177+00:00"
                     status: 404
                     error: "Not Found"
-                    path: "Product with id 344 was not found"
+                    message: "Not found"
       operationId: get-product-id
     post:
       summary: Update product details
       operationId: post-products-id
       responses:
-        '200':
+        "200":
           description: Update successful
           content:
             text/plain:
@@ -70,34 +66,26 @@ paths:
                 type: string
               examples:
                 UPDATE_DETAILS:
-                  value:
-                    name: 'XYZ Fone'
-                    type: 'gadget'
-                    inventory: 10
-                    id: 10
-        '400':
-          description: 'Bad Request'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
+                  value: "success"
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: './common.yaml#/components/schemas/Product'
+              $ref: "./common.yaml#/components/schemas/Product"
             examples:
               UPDATE_DETAILS:
                 value:
-                  name: 'XYZ Fone'
-                  type: 'gadget'
+                  name: "XYZ Fone"
+                  type: "gadget"
                   inventory: 10
                   id: 10
     delete:
       summary: Delete a product
       operationId: delete-products-id
       responses:
-        '200':
+        "200":
           description: Deletion successful
           content:
             text/plain:
@@ -105,13 +93,9 @@ paths:
                 type: string
               examples:
                 DELETE_PRODUCT:
-                  value: ''
-        '400':
-          description: 'Bad Request'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
+                  value: "success"
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
   /products:
     get:
       summary: GET Products based on type
@@ -129,31 +113,27 @@ paths:
         "200":
           description: List of products in the response
           content:
-            text/plain:
+            application/json:
               schema:
                 type: array
                 items:
-                  $ref: 'common.yaml#/components/schemas/Product'
+                  $ref: "common.yaml#/components/schemas/Product"
     post:
       summary: POST /products
       requestBody:
         content:
           application/json:
             schema:
-              $ref: 'common.yaml#/components/schemas/ProductDetails'
+              $ref: "common.yaml#/components/schemas/ProductDetails"
       responses:
         "200":
           description: POST /products
           content:
             application/json:
               schema:
-                $ref: 'common.yaml#/components/schemas/ProductId'
+                $ref: "common.yaml#/components/schemas/ProductId"
         "400":
-          description: POST /products
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
   /orders:
     post:
       summary: POST /orders
@@ -161,7 +141,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'common.yaml#/components/schemas/OrderDetails'
+              $ref: "common.yaml#/components/schemas/OrderDetails"
             examples:
               CREATE_ORDER:
                 value:
@@ -174,45 +154,34 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'common.yaml#/components/schemas/OrderId'
+                $ref: "common.yaml#/components/schemas/OrderId"
               examples:
                 CREATE_ORDER:
                   value:
-                    productid: 10
-                    count: 2
-                    status: pending
                     id: 10
         "400":
-          description: POST /orders
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
     get:
       summary: Search for orders
       operationId: get-orders
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: './common.yaml#/components/schemas/Order'
+                  $ref: "./common.yaml#/components/schemas/Order"
               examples:
                 200_OK:
                   value:
                     - productid: 10
                       count: 2
-                      status: 'pending'
+                      status: "pending"
                       id: 10
-        '400':
-          description: 'Bad Request'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
       parameters:
         - schema:
             type: number
@@ -228,8 +197,8 @@ paths:
           examples:
             200_OK:
               value: fulfilled
-      description: ''
-  '/orders/{id}':
+      description: ""
+  "/orders/{id}":
     parameters:
       - schema:
           type: number
@@ -243,33 +212,29 @@ paths:
             value: 433
     get:
       summary: Fetch order details
-      tags: [ ]
+      tags: []
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: './common.yaml#/components/schemas/Order'
+                $ref: "./common.yaml#/components/schemas/Order"
               examples:
                 DETAILS:
                   value:
                     productid: 10
                     count: 2
-                    status: 'pending'
+                    status: "pending"
                     id: 10
-        '400':
-          description: 'Bad Request'
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
+        "404":
+          description: "Not Found"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
-        '404':
-          description: 'Not Found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
+                $ref: "#/components/schemas/ErrorResponseBody"
               examples:
                 INVALID_ID:
                   value:
@@ -278,12 +243,12 @@ paths:
                     error: "Not Found"
                     message: "Product with id 344 was not found"
       operationId: get-orders-id
-      parameters: [ ]
+      parameters: []
     post:
       summary: Update order details
       operationId: post-orders-id
       responses:
-        '200':
+        "200":
           description: Success
           content:
             text/plain:
@@ -291,18 +256,14 @@ paths:
                 type: string
               examples:
                 UPDATE_ORDER:
-                  value:
-        '400':
-          description: 'Bad Request'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
+                  value: "success"
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: './common.yaml#/components/schemas/Order'
+              $ref: "./common.yaml#/components/schemas/Order"
             examples:
               UPDATE_ORDER:
                 value:
@@ -314,7 +275,7 @@ paths:
       summary: Cancel an order
       operationId: delete-orders-id
       responses:
-        '200':
+        "200":
           description: Cancel successful
           content:
             text/plain:
@@ -322,13 +283,9 @@ paths:
                 type: string
               examples:
                 DELETE_ORDER:
-                  value:
-        '400':
-          description: 'Bad Request'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponseBody'
+                  value: "success"
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
 components:
   schemas:
     Products_RequestBody:
