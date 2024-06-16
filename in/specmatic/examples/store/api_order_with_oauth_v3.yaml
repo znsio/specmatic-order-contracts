@@ -57,8 +57,6 @@ paths:
     post:
       summary: Update product details
       operationId: post-products-id
-      security:
-        - ApiKeyAuth: []
       responses:
         "200":
           description: Update successful
@@ -86,8 +84,6 @@ paths:
     delete:
       summary: Delete a product
       operationId: delete-products-id
-      security:
-        - ApiKeyAuth: []
       responses:
         "200":
           description: Deletion successful
@@ -124,8 +120,6 @@ paths:
                   $ref: "common.yaml#/components/schemas/Product"
     post:
       summary: POST /products
-      security:
-        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -143,8 +137,6 @@ paths:
   /orders:
     post:
       summary: POST /orders
-      security:
-        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -255,8 +247,6 @@ paths:
     post:
       summary: Update order details
       operationId: post-orders-id
-      security:
-        - ApiKeyAuth: []
       responses:
         "200":
           description: Success
@@ -284,8 +274,6 @@ paths:
     delete:
       summary: Cancel an order
       operationId: delete-orders-id
-      security:
-        - ApiKeyAuth: []
       responses:
         "200":
           description: Cancel successful
