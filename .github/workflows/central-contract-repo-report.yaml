@@ -18,6 +18,10 @@ jobs:
             --entrypoint /bin/sh znsio/specmatic \
             -c "cd /central-contract-repo && java -jar /usr/src/app/specmatic.jar central-contract-repo-report"
 
+      - name: Check URL Redirect
+        run: |
+          curl -I -L -o /dev/null -s -w "%{http_code} %{url_effective}\n" https://insights.specmatic.in
+
       - name: Run Specmatic Insights Github Build Reporter
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_API_ACCESS_TOKEN }}
