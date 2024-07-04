@@ -30,10 +30,10 @@ message Product {
   int32 inventory = 4 [(buf.validate.field).required = true];
 }
 
-message   NewProduct {
+message NewProduct {
   string name = 1 [(buf.validate.field).required = true];
   ProductType type = 2 [(buf.validate.field).required = true];
-  int32 inventory = 3 [(buf.validate.field).required = true];
+  int32 inventory = 3 [(buf.validate.field).required = false];
 }
 
 message ProductId {
