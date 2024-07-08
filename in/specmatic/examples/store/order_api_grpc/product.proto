@@ -2,6 +2,7 @@ syntax = "proto3";
 
 option java_multiple_files = true;
 option java_package = "com.store.product.proto";
+option go_package = "github.com/znsio/specmatic-order-bff-grpc-go/com/store/product/proto";
 option java_outer_classname = "ProductProto";
 
 package com.store;
