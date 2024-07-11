@@ -30,4 +30,3 @@ input NewProductInput {
   inventory: Int!
   type: ProductType!
 }
-
