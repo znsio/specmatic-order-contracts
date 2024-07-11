@@ -30,7 +30,14 @@ jobs:
             in/**/*.yml
             in/**/*.json
           files_ignore: kafka.yaml #skipping it as async is under private-beta
-      
+
+      - name: Get changed GraphQLS files
+        id: changed-graphqls-files
+        uses: tj-actions/changed-files@v34
+        with:
+          files: |
+            in/**/*.graphqls
+  
       - name: Install Spectral Linter
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: npm install -g @stoplight/spectral-cli
@@ -51,7 +58,7 @@ jobs:
             echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
             echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
 
-      - name: Run backward compatibility check on changed files
+      - name: Run OpenAPI backward compatibility check on changed files
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
@@ -59,3 +66,11 @@ jobs:
             --entrypoint /bin/sh znsio/specmatic \
             -c "git config --global --add safe.directory /central-contract-repo && cd /central-contract-repo && java -jar /usr/src/app/specmatic.jar backwardCompatibilityCheck"
 
+      - name: Run GraphQL backward compatibility check on changed files
+        if: steps.changed-graphqls-files.outputs.any_changed == 'true'
+        run: |
+          docker run --rm \
+            -v .:/central-contract-repo \
+            -w /central-contract-repo \
+            --env-file env.list \
+            znsio/specmatic-graphql-trial backwardCompatibilityCheck
