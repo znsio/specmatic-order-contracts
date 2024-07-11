@@ -69,8 +69,8 @@ jobs:
       - name: Run GraphQL backward compatibility check on changed files
         if: steps.changed-graphqls-files.outputs.any_changed == 'true'
         run: |
-          docker run --rm \
-            -v .:/central-contract-repo \
-            -w /central-contract-repo \
+          docker run -v "$(pwd):/central-contract-repo:rw" \
             --env-file env.list \
-            znsio/specmatic-graphql-trial backwardCompatibilityCheck
+            --entrypoint /bin/sh \
+            znsio/specmatic-graphql-trial \
+            -c "git config --global --add safe.directory /central-contract-repo && cd /central-contract-repo && java -jar /usr/bin/specmatic-graphql.jar backwardCompatibilityCheck"
