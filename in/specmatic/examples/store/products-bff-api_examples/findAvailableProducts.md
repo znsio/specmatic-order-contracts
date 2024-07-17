@@ -7,6 +7,7 @@ query {
     findAvailableProducts(type: gadget, pageSize: 10) { id name inventory type }
 }
 ```
+
 Response
 
 ```json
