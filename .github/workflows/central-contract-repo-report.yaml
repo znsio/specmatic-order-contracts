@@ -20,7 +20,7 @@ jobs:
 
       - name: Check URL Redirect
         run: |
-          curl -I -L -o /dev/null -s -w "%{http_code} %{url_effective}\n" https://insights.specmatic.in
+          curl -I -L -o /dev/null -s -w "%{http_code} %{url_effective}\n" https://insights.specmatic.io
 
       - name: Run Specmatic Insights Github Build Reporter
         env:
