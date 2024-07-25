@@ -26,9 +26,9 @@ jobs:
         uses: tj-actions/changed-files@v34
         with:
           files: |
-            in/**/*.yaml
-            in/**/*.yml
-            in/**/*.json
+            io/**/*.yaml
+            io/**/*.yml
+            io/**/*.json
           files_ignore: kafka.yaml #skipping it as async is under private-beta
 
       - name: Get changed GraphQLS files
@@ -36,7 +36,7 @@ jobs:
         uses: tj-actions/changed-files@v34
         with:
           files: |
-            in/**/*.graphqls
+            io/**/*.graphqls
   
       - name: Install Spectral Linter
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -46,7 +46,7 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           echo "Running Spectral linter on: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
-          spectral lint in/**/*.yaml
+          spectral lint io/**/*.yaml
       
       - name: Create environment file
         run: |

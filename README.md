@@ -2,7 +2,7 @@
 
 ## What is Central Contract Repository?
 
-Please see **[Documentation](https://specmatic.in/documentation/central_contract_repository.html)**
+Please see **[Documentation](https://specmatic.io/documentation/central_contract_repository.html)**
 
 ---
 
@@ -12,7 +12,7 @@ This repository serves as the Central Contract Repository for the API Specificat
 
 ## Backward Compatibility Testing
 
-To verify [backward compatibility](https://specmatic.in/#backward-compatibility) between API Specifications in your branch and the main branch on your local machine run below command.
+To verify [backward compatibility](https://specmatic.io/#backward-compatibility) between API Specifications in your branch and the main branch on your local machine run below command.
 
 ```shell
 ls **/*.yaml | xargs ./backward_compatibility.sh
