@@ -184,7 +184,7 @@ paths:
           $ref: "./common_responses.yaml#/components/responses/BadRequest"
       parameters:
         - schema:
-            type: number
+            type: integer
           in: query
           name: productid
           examples:
@@ -201,7 +201,7 @@ paths:
   "/orders/{id}":
     parameters:
       - schema:
-          type: number
+          type: integer
         name: id
         in: path
         required: true
