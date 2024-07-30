@@ -71,23 +71,6 @@ paths:
                   value: "success"
         "400":
           $ref: "./common_responses.yaml#/components/responses/BadRequest"
-  /products:
-    get:
-      summary: GET Products based on type
-      parameters:
-        - name: type
-          in: query
-          schema:
-            $ref: "./common.yaml#/components/schemas/ProductType"
-      responses:
-        "200":
-          description: List of products in the response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "common.yaml#/components/schemas/Product"
   /orders:
     post:
       summary: POST /orders
