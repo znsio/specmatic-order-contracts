@@ -54,35 +54,6 @@ paths:
                     error: "Not Found"
                     message: "Not found"
       operationId: get-product-id
-    post:
-      summary: Update product details
-      operationId: post-products-id
-      security:
-        - ApiKeyAuth: []
-      responses:
-        "200":
-          description: Update successful
-          content:
-            text/plain:
-              schema:
-                type: string
-              examples:
-                UPDATE_PRODUCT:
-                  value: "success"
-        "400":
-          $ref: "./common_responses.yaml#/components/responses/BadRequest"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "./common.yaml#/components/schemas/Product"
-            examples:
-              UPDATE_PRODUCT:
-                value:
-                  name: "XYZ Fone"
-                  type: "gadget"
-                  inventory: 10
-                  id: 10
     delete:
       summary: Delete a product
       operationId: delete-products-id
@@ -117,24 +88,6 @@ paths:
                 type: array
                 items:
                   $ref: "common.yaml#/components/schemas/Product"
-    post:
-      summary: POST /products
-      security:
-        - ApiKeyAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "common.yaml#/components/schemas/ProductDetails"
-      responses:
-        "200":
-          description: POST /products
-          content:
-            application/json:
-              schema:
-                $ref: "common.yaml#/components/schemas/ProductId"
-        "400":
-          $ref: "./common_responses.yaml#/components/responses/BadRequest"
   /orders:
     post:
       summary: POST /orders
