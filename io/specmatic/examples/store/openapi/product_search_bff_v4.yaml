@@ -35,7 +35,7 @@ paths:
               SUCCESS:
                 value:
                   name: iPhone
-                  type: gadget
+                  type: accessories
                   inventory: 100
       responses:
         '201':
