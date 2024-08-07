@@ -4,6 +4,9 @@ info:
   version: '1.0'
 servers:
   - url: http://localhost:8080
+tags:
+  - name: WIP
+    description: API still under development
 paths:
   /products:
     summary: Create a new product
@@ -126,6 +129,7 @@ paths:
                     message: Timeout
   /orders:
     post:
+      summary: Create a new order
       requestBody:
         content:
           application/json:
@@ -172,6 +176,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequest'
+    get:
+      summary: Retrieve order information
+      tags:
+        - WIP
+      parameters:
+        - in: query
+          name: orderId
+          schema:
+            type: integer
+          required: false
+          description: ID of the order to retrieve. If not provided, returns all orders.
+          examples:
+            SUCCESS:
+              value: 100
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+              examples:
+                SUCCESS:
+                  value:
+                    - id: 1
+                      productid: 1
+                      count: 2
+                      status: "completed"
 components:
   schemas:
     Product:
@@ -193,6 +227,24 @@ components:
         - id
         - type
         - inventory
+    Order:
+      title: Order Details
+      type: object
+      properties:
+        id:
+          type: integer
+        productid:
+          type: integer
+        count:
+          type: integer
+        status:
+          type: string
+          enum: [pending, completed, cancelled]
+      required:
+        - id
+        - productid
+        - count
+        - status
     BadRequest:
       title: Bad Request
       type: object
@@ -205,4 +257,3 @@ components:
           type: string
         message:
           type: string
-
