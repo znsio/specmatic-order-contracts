@@ -178,8 +178,6 @@ paths:
                 $ref: '#/components/schemas/BadRequest'
     get:
       summary: Retrieve order information
-      tags:
-        - WIP
       parameters:
         - in: query
           name: orderId
