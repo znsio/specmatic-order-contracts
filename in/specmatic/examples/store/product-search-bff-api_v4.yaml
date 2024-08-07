@@ -187,6 +187,9 @@ paths:
             type: integer
           required: false
           description: ID of the order to retrieve. If not provided, returns all orders.
+          examples:
+            SUCCESS:
+              value: 100
       responses:
         '200':
           description: Successful response
@@ -203,24 +206,6 @@ paths:
                       productid: 1
                       count: 2
                       status: "completed"
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequest'
-        '404':
-          description: Order not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequest'
-        '503':
-          description: Timeout
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequest'
 components:
   schemas:
     Product:
