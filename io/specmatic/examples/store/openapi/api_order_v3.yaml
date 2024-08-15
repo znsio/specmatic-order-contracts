@@ -132,7 +132,7 @@ paths:
               UPDATE_PRODUCT_IMAGE:
                 value:
                   image:
-                    externalValue: ".specmatic/specmatic-order-contracts/io/specmatic/examples/store/openapi/box_image.jpg"
+                    externalValue: ".specmatic/repos/specmatic-order-contracts/io/specmatic/examples/store/openapi/box_image.jpg"
       responses:
         "200":
           description: Product image updated successfully
