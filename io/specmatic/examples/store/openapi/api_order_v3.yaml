@@ -343,7 +343,7 @@ paths:
                     - rowNumber
                     - status
               examples:
-                SUCCESS_RESPONSE:
+                RESTOCK_CSV:
                   value:
                     - rowNumber: 1
                       status: "success"
