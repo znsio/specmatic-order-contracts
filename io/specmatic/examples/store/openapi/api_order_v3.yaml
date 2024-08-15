@@ -100,6 +100,60 @@ paths:
                   value: "success"
         "400":
           $ref: "./common_responses.yaml#/components/responses/BadRequest"
+  "/products/{id}/image":
+    put:
+      summary: Update or upload a product image
+      operationId: updateProductImage
+      tags:
+        - WIP
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the product to update the image for
+      requestBody:
+        description: Image file to be associated with the product
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: The image file to upload
+            examples:
+              UPDATE_PRODUCT_IMAGE:
+                value:
+                  image: "box_image.png"
+      responses:
+        "200":
+          description: Product image updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  productId:
+                    type: integer
+              examples:
+                UPDATE_PRODUCT_IMAGE:
+                  value:
+                    message: "Product image updated successfully"
+                    productId: 10
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseBody"
   /products:
     get:
       summary: GET Products based on type
@@ -297,72 +351,6 @@ paths:
                   value: "success"
         "400":
           $ref: "./common_responses.yaml#/components/responses/BadRequest"
-  "/inventory/restock":
-    post:
-      summary: Bulk restock inventory via CSV file
-      operationId: bulkRestockInventory
-      tags:
-        - WIP
-      requestBody:
-        description: CSV file containing restock transactions
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: The CSV file containing the restock details
-            examples:
-              RESTOCK_CSV:
-                value: 
-                  file:
-                    externalValue: "restock.csv"
-      responses:
-        "201":
-          description: Restock transactions recorded successfully
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    rowNumber:
-                      type: integer
-                      description: The row number in the CSV file
-                    status:
-                      type: string
-                      description: Status of the restock transaction
-                      enum: [success, failure]
-                    message:
-                      type: string
-                      description: Details of the success or failure
-                  required:
-                    - rowNumber
-                    - status
-              examples:
-                RESTOCK_CSV:
-                  value:
-                    - rowNumber: 1
-                      status: "success"
-                      message: "Restock transaction recorded successfully"
-                    - rowNumber: 2
-                      status: "failure"
-                      message: "Invalid product ID"
-                    - rowNumber: 3
-                      status: "success"
-                      message: "Restock transaction recorded successfully"
-        "400":
-          $ref: "./common_responses.yaml#/components/responses/BadRequest"
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseBody"
 components:
   schemas:
     Products_RequestBody:
@@ -398,23 +386,6 @@ components:
             - pending
             - fulfilled
             - cancelled
-    RestockTransaction:
-      type: object
-      required:
-        - productId
-        - quantity
-        - date
-      properties:
-        productId:
-          type: integer
-          description: ID of the product being restocked
-        quantity:
-          type: integer
-          description: Quantity of the product being added to inventory
-        date:
-          type: string
-          format: date-time
-          description: Date and time of the restock transaction
     ErrorResponseBody:
       properties:
         id:
