@@ -318,7 +318,8 @@ paths:
             examples:
               RESTOCK_CSV:
                 value: 
-                  file: "restock.csv"
+                  file:
+                    externalValue: "restock.csv"
       responses:
         "201":
           description: Restock transactions recorded successfully
