@@ -104,8 +104,6 @@ paths:
     put:
       summary: Update or upload a product image
       operationId: updateProductImage
-      tags:
-        - WIP
       parameters:
         - name: id
           in: path
@@ -120,6 +118,8 @@ paths:
           multipart/form-data:
             schema:
               type: object
+              required:
+                - image
               properties:
                 image:
                   type: string
@@ -129,7 +129,7 @@ paths:
               UPDATE_PRODUCT_IMAGE:
                 value:
                   image:
-                    externalValue: "box_image.png"
+                    externalValue: "@box_image.png"
       responses:
         "200":
           description: Product image updated successfully
