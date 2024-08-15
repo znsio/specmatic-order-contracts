@@ -100,6 +100,64 @@ paths:
                   value: "success"
         "400":
           $ref: "./common_responses.yaml#/components/responses/BadRequest"
+  "/products/{id}/image":
+    put:
+      summary: Update or upload a product image
+      operationId: updateProductImage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the product to update the image for
+      requestBody:
+        description: Image file to be associated with the product
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - image
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: The image file to upload
+            encoding:
+              image:
+                contentType: image/png, image/jpeg
+            examples:
+              UPDATE_PRODUCT_IMAGE:
+                value:
+                  image:
+                    externalValue: ".specmatic/repos/specmatic-order-contracts/io/specmatic/examples/store/openapi/box_image.jpg"
+      responses:
+        "200":
+          description: Product image updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  productId:
+                    type: integer
+              examples:
+                UPDATE_PRODUCT_IMAGE:
+                  value:
+                    message: "Product image updated successfully"
+                    productId: 10
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseBody"
   /products:
     get:
       summary: GET Products based on type
