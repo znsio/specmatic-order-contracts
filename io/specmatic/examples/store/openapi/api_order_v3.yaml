@@ -128,7 +128,8 @@ paths:
             examples:
               UPDATE_PRODUCT_IMAGE:
                 value:
-                  image: "box_image.png"
+                  image:
+                    externalValue: "box_image.png"
       responses:
         "200":
           description: Product image updated successfully
