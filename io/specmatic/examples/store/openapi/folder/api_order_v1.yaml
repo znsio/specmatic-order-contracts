@@ -30,7 +30,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './common.yaml#/components/schemas/Product'
+                $ref: '../common.yaml#/components/schemas/Product'
               examples:
                 GET_DETAILS:
                   value:
@@ -114,7 +114,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './common.yaml#/components/schemas/Product'
+              $ref: '../common.yaml#/components/schemas/Product'
             examples:
               UPDATE_DETAILS:
                 value:
@@ -166,7 +166,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './common.yaml#/components/schemas/ProductId'
+                $ref: '../common.yaml#/components/schemas/ProductId'
               examples:
                 ADD_PRODUCT:
                   value:
@@ -192,7 +192,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './common.yaml#/components/schemas/ProductDetails'
+              $ref: '../common.yaml#/components/schemas/ProductDetails'
             examples:
               ADD_PRODUCT:
                 value:
@@ -210,7 +210,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: './common.yaml#/components/schemas/Product'
+                  $ref: '../common.yaml#/components/schemas/Product'
               examples:
                 SEARCH_1:
                   value:
@@ -285,7 +285,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './common.yaml#/components/schemas/OrderId'
+                $ref: '../common.yaml#/components/schemas/OrderId'
               examples:
                 200_OK:
                   value:
@@ -311,7 +311,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './common.yaml#/components/schemas/OrderDetails'
+              $ref: '../common.yaml#/components/schemas/OrderDetails'
             examples:
               200_OK:
                 value:
@@ -329,7 +329,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: './common.yaml#/components/schemas/Order'
+                  $ref: '../common.yaml#/components/schemas/Order'
               examples:
                 200_OK:
                   value:
@@ -391,7 +391,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './common.yaml#/components/schemas/Order'
+                $ref: '../common.yaml#/components/schemas/Order'
               examples:
                 DETAILS:
                   value:
@@ -476,7 +476,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './common.yaml#/components/schemas/Order'
+              $ref: '../common.yaml#/components/schemas/Order'
             examples:
               UPDATE_ORDER:
                 value:
