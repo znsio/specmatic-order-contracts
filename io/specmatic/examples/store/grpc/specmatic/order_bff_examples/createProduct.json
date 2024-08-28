@@ -1,0 +1,11 @@
+{
+  "fullMethodName": "com.store.order.bff.OrderService/createProduct",
+  "request": {
+    "name": "Smartphone",
+    "type": "GADGET",
+    "inventory": 100
+  },
+  "response": {
+    "id": 15
+  }
+}
