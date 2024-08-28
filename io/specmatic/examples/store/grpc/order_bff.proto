@@ -24,7 +24,11 @@ enum ProductType {
 
 message findAvailableProductsRequest {
   ProductType type = 1 [(buf.validate.field).enum.defined_only = true];
-  int32  pageSize = 2 [(buf.validate.field).required = true];
+  int32  pageSize = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).int32.gte = 10,
+    (buf.validate.field).int32.lte = 20
+  ];
 }
 
 message Product {
