@@ -50,15 +50,17 @@ jobs:
       
       - name: Create environment file
         run: |
-            echo "GITHUB_REF=${{ github.ref }}" >> env.list
+            # echo "GITHUB_REF=${{ github.ref }}" >> env.list
             echo "GITHUB_SHA=${{ github.sha }}" >> env.list
             echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
             echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
             echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
             echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
-            if [ -n "${{ github.base_ref }}" ]; then
+            if [ -z "${{ github.base_ref }}" ]; then
+                echo "GITHUB_BASE_REF=${{ github.ref }}" >> env.list
+            else
               echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
-            fi      
+            fi     
 
       - name: Run OpenAPI backward compatibility check on changed files
         if: steps.changed-files-specific.outputs.any_changed == 'true'
