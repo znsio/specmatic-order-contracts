@@ -57,7 +57,7 @@ jobs:
             echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
             echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
             if [ -z "${{ github.base_ref }}" ]; then
-                echo "GITHUB_BASE_REF=${{ github.ref }}" >> env.list
+                echo "GITHUB_BASE_REF=${{ github.ref#refs/heads/ }}" >> env.list
             else
               echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
             fi     
