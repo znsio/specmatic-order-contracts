@@ -77,7 +77,7 @@ components:
   parameters:
     OrderStatusParam:
       name: OrderStatusParam
-      in: query
+      in: query 
       required: false
       schema:
         type: string
