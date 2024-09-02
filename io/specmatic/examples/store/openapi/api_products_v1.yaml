@@ -87,8 +87,10 @@ components:
       properties:
         name:
           type: string
+          nullable: true
         cost:
           type: integer
+          nullable: true
     ProductId:
       title: Product Id
       type: object
