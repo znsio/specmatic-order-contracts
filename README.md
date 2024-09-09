@@ -6,20 +6,25 @@ Please see **[Documentation](https://specmatic.io/documentation/central_contract
 
 ---
 
-This repository serves as the Central Contract Repository for the API Specifications / Contracts the govern interactions between below applications
-* [Order UI](http://github.com/znsio/specmatic-order-ui) - consumer / client
-* [Order API](http://github.com/znsio/specmatic-order-api) - provider / service / API
+This repository serves as the Central Contract Repository for the following API Specifications / Contracts 
+* OpenAPI
+* GraphQL
+* gRPC
+* Async API
+
+These contracts govern interactions between sample applications which you can find here
+* [Sample Projects](https://specmatic.io/documentation/sample_projects.html)
 
 ## Backward Compatibility Testing
 
-To verify [backward compatibility](https://specmatic.io/#backward-compatibility) between API Specifications in your branch and the main branch on your local machine run below command.
+Backward compatibility between API specifications is now automatically checked using our GitHub Actions workflow. This ensures that changes in your branch are compatible with the main branch before merging.
 
-```shell
-ls **/*.yaml | xargs ./backward_compatibility.sh
-echo $?
-```
+### How it works:
 
-The ```echo $?``` for Specmatic behaves like any other command line tool returning "0" for success and "1" for failure.
+1. When you push changes to a branch or create a pull request targeting the main branch, the CI workflow is triggered.
+2. The workflow identifies changed API specification files (YAML, JSON, and GraphQL).
+3. For changed OpenAPI specifications, it runs a backward compatibility check using the Specmatic.
+4. For changed GraphQL schemas, it performs a similar check using the Specmatic GraphQL.
 
 ## Linting
 
