@@ -83,4 +83,4 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" znsio/specmatic examples validate \
-           --contract-file /central-contract-repo/orders/product_search_bff_v4.yaml
+           --contract-file /central-contract-repo/io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
