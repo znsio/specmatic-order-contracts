@@ -8,7 +8,7 @@ enum ProductType {
   book
   food
   other
-  another
+  another 
 }
 
 type Query {
