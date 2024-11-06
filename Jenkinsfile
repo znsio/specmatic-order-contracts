@@ -51,6 +51,12 @@ pipeline {
         //                 }
         //             }
         // }
+        agent {
+        docker {
+            image 'docker:latest'
+            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
         stage('Run OpenAPI Backward compatibility Check') {
             steps {
                 script {
