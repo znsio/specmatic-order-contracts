@@ -56,34 +56,32 @@ pipeline {
             }
         }
 
-        stages {
-            stage('Debug Values') {
-                steps {
-                    script {
-                        echo """
-                        Debugging all values:
-                        ---------------------
-                        WORKSPACE: ${WORKSPACE}
-                        SPECMATIC_ORG_ID: ${SPECMATIC_ORG_ID}
-                        JOB_NAME: ${env.JOB_NAME}
-                        BUILD_NUMBER: ${env.BUILD_NUMBER}
-                        BRANCH_NAME: ${env.BRANCH_NAME ?: 'main (fallback)'}
-                        
-                        GIT Info:
-                        ---------------------
-                        """
-                        
-                        // Get Git URL safely
-                        def gitUrl = sh(script: 'git config --get remote.origin.url || echo "No Git URL found"', returnStdout: true).trim()
-                        echo "GIT URL: ${gitUrl}"
-                        
-                        // Check reports directory
-                        sh """
-                            echo "Reports Directory Check:"
-                            echo "------------------------"
-                            ls -la ${WORKSPACE}/build/reports/specmatic || echo "Reports directory not found"
-                        """
-                    }
+        stage('Debug Values') {
+            steps {
+                script {
+                    echo """
+                    Debugging all values:
+                    ---------------------
+                    WORKSPACE: ${WORKSPACE}
+                    SPECMATIC_ORG_ID: ${SPECMATIC_ORG_ID}
+                    JOB_NAME: ${env.JOB_NAME}
+                    BUILD_NUMBER: ${env.BUILD_NUMBER}
+                    BRANCH_NAME: ${env.BRANCH_NAME ?: 'main (fallback)'}
+                    
+                    GIT Info:
+                    ---------------------
+                    """
+                    
+                    // Get Git URL safely
+                    def gitUrl = sh(script: 'git config --get remote.origin.url || echo "No Git URL found"', returnStdout: true).trim()
+                    echo "GIT URL: ${gitUrl}"
+                    
+                    // Check reports directory
+                    sh """
+                        echo "Reports Directory Check:"
+                        echo "------------------------"
+                        ls -la ${WORKSPACE}/build/reports/specmatic || echo "Reports directory not found"
+                    """
                 }
             }
         }
