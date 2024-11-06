@@ -25,14 +25,14 @@ pipeline {
             }
         }
 
-        stage('Setup') {
-            steps {
-                script {
-                    // Install the reporter package globally
-                    sh 'npm install -g @specmatic/specmatic-insights-github-build-reporter'
-                }
-            }
-        }
+        // stage('Setup') {
+        //     steps {
+        //         script {
+        //             // Install the reporter package globally
+        //             sh 'npm install -g @specmatic/specmatic-insights-github-build-reporter'
+        //         }
+        //     }
+        // }
         
         stage('Run OpenAPI Backward compatibility Check') {
             steps {
