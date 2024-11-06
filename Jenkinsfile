@@ -47,29 +47,19 @@ pipeline {
 
             steps {
                 script {
-                    // Get Jenkins job information
-                    def jobName = env.JOB_NAME
-                    def buildNumber = env.BUILD_NUMBER
-                    def branchName = env.BRANCH_NAME ?: 'main'  // Fallback to 'main' if not available
-                    
-                    // Get repository information from Git
-                    def repoUrl = sh(script: 'git config --get remote.origin.url', returnStdout: true).trim()
-                    def repoName = repoUrl.tokenize('/').last().replace('.git', '')
-                    
-                    // Run Specmatic Insights reporter
-                    docker.image('znsio/specmatic-insights-github-build-reporter:latest').inside("-v ${WORKSPACE}:/workspace") {
+                    withDockerContainer('znsio/specmatic-insights-github-build-reporter:latest') {
                         sh """
                             /app/specmatic-insights-reporter \
                             --specmatic-insights-host https://insights.specmatic.in \
-                            --specmatic-reports-dir /workspace/build/reports/specmatic \
+                            --specmatic-reports-dir ${WORKSPACE}/build/reports/specmatic \
                             --org-id ${SPECMATIC_ORG_ID} \
-                            --branch-ref refs/heads/${branchName} \
-                            --branch-name ${branchName} \
-                            --build-definition-id "${jobName}" \
-                            --build-id ${buildNumber} \
-                            --repo-name ${repoName} \
-                            --repo-id ${jobName.hashCode()} \
-                            --repo-url ${repoUrl}
+                            --branch-ref refs/heads/${env.BRANCH_NAME} \
+                            --branch-name ${env.BRANCH_NAME} \
+                            --build-definition-id "${env.JOB_NAME}" \
+                            --build-id ${env.BUILD_NUMBER} \
+                            --repo-name ${env.JOB_NAME} \
+                            --repo-id ${env.BUILD_NUMBER} \
+                            --repo-url \$(git config --get remote.origin.url)
                         """
                     }
                 }
