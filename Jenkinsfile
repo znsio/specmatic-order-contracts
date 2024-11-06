@@ -1,10 +1,6 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:latest'
-            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
+    
     stages {
         stage('Checkout') {
             steps {
@@ -18,43 +14,6 @@ pipeline {
                 }
             }
         }
-        // stage('Run Self Loop Test') {
-        //     parallel {
-        //         stage('Run Specmatic as Stub') {
-        //             steps {
-        //                 script {
-        //                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
-        //                         sh """
-        //                         docker run -p 9000:9000 znsio/specmatic stub
-        //                         """
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //         stage('Run Specmatic test') {
-        //             steps {
-        //                 script {
-        //                     sleep 10
-        //                     sh """
-        //                     docker run /usr/src/app/specmatic.jar test --port=9000
-        //                     pkill -f 'java -jar'
-        //                     """
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
-        // stage('Run OpenAPI Examples Validation Check') {
-        //             steps {
-        //                 script {
-        //                     sh '''
-        //                         docker run znsio/specmatic examples validate \
-        //                         --contract-file ./io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
-        //                     '''
-        //                 }
-        //             }
-        // }
         
         stage('Run OpenAPI Backward compatibility Check') {
             steps {
