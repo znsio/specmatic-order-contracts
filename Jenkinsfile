@@ -20,7 +20,7 @@ pipeline {
                 script {
                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') { // have to handle this because bcc is failing build when no files are changed
                         sh '''
-                            java -jar /usr/src/app/specmatic.jar backward-compatibility-check --base-branch origin/main
+                            java -jar specmatic_2.0.33.jar backward-compatibility-check --base-branch origin/main
                         '''
                     }
                 }
@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        java -jar /usr/src/app/specmatic.jar central-contract-repo-report
+                        java -jar specmatic_2.0.33.jar central-contract-repo-report
                     '''
                 }
             }
