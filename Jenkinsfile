@@ -56,24 +56,56 @@ pipeline {
             }
         }
 
-        stage('Upload Specmatic Insights Reports') {
-            steps {
-                script {
-                    sh """
-                        specmatic-insights-github-build-reporter \
-                        --specmatic-insights-host https://insights.specmatic.in \
-                        --specmatic-reports-dir build/reports/specmatic \
-                        --org-id ${SPECMATIC_ORG_ID} \
-                        --branch-ref refs/heads/${env.BRANCH_NAME ?: 'main'} \
-                        --branch-name ${env.BRANCH_NAME ?: 'main'} \
-                        --build-definition-id "${env.JOB_NAME}" \
-                        --build-id ${env.BUILD_NUMBER} \
-                        --repo-name "${env.JOB_NAME}" \
-                        --repo-id "${env.BUILD_NUMBER}" \
-                        --repo-url \$(git config --get remote.origin.url || echo 'undefined')
-                    """
+        stages {
+            stage('Debug Values') {
+                steps {
+                    script {
+                        echo """
+                        Debugging all values:
+                        ---------------------
+                        WORKSPACE: ${WORKSPACE}
+                        SPECMATIC_ORG_ID: ${SPECMATIC_ORG_ID}
+                        JOB_NAME: ${env.JOB_NAME}
+                        BUILD_NUMBER: ${env.BUILD_NUMBER}
+                        BRANCH_NAME: ${env.BRANCH_NAME ?: 'main (fallback)'}
+                        
+                        GIT Info:
+                        ---------------------
+                        """
+                        
+                        // Get Git URL safely
+                        def gitUrl = sh(script: 'git config --get remote.origin.url || echo "No Git URL found"', returnStdout: true).trim()
+                        echo "GIT URL: ${gitUrl}"
+                        
+                        // Check reports directory
+                        sh """
+                            echo "Reports Directory Check:"
+                            echo "------------------------"
+                            ls -la ${WORKSPACE}/build/reports/specmatic || echo "Reports directory not found"
+                        """
+                    }
                 }
             }
+        }
+
+        // stage('Upload Specmatic Insights Reports') {
+        //     steps {
+        //         script {
+        //             sh """
+        //                 specmatic-insights-github-build-reporter \
+        //                 --specmatic-insights-host https://insights.specmatic.in \
+        //                 --specmatic-reports-dir build/reports/specmatic \
+        //                 --org-id ${SPECMATIC_ORG_ID} \
+        //                 --branch-ref refs/heads/${env.BRANCH_NAME ?: 'main'} \
+        //                 --branch-name ${env.BRANCH_NAME ?: 'main'} \
+        //                 --build-definition-id "${env.JOB_NAME}" \
+        //                 --build-id ${env.BUILD_NUMBER} \
+        //                 --repo-name "${env.JOB_NAME}" \
+        //                 --repo-id "${env.BUILD_NUMBER}" \
+        //                 --repo-url \$(git config --get remote.origin.url || echo 'undefined')
+        //             """
+        //         }
+        //     }
             // steps {
             //     script {
             //         def githubToken = env.GH_REPOSITORY_TOKEN
@@ -105,6 +137,6 @@ pipeline {
             //         """
             //     }
             // }
-        }
+        // }
     }
 }
