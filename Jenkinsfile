@@ -1,9 +1,11 @@
 pipeline {
-    agent {
-        label 'docker-enabled'  // Specify an agent that has Docker installed
+    agent any
+
+    tools {
+        nodejs 'NodeJS'  // Make sure you have NodeJS configured in Jenkins Global Tool Configuration
     }
 
-     environment {
+    environment {
         // Define environment variables
         SPECMATIC_ORG_ID = "66fe6c555e232d36a28fef94"  // Stored in Jenkins credentials
         WORKSPACE = pwd()  // Get Jenkins workspace path
@@ -19,6 +21,15 @@ pipeline {
             steps {
                 script {
                     sh 'ls -R'
+                }
+            }
+        }
+
+        stage('Setup') {
+            steps {
+                script {
+                    // Install the reporter package globally
+                    sh 'npm install -g @specmatic/specmatic-insights-github-build-reporter'
                 }
             }
         }
@@ -45,25 +56,22 @@ pipeline {
             }
         }
 
-        stage('Run Specmatic Insights Reporter') {
-
+        stage('Upload Specmatic Insights Reports') {
             steps {
                 script {
-                    withDockerContainer('znsio/specmatic-insights-github-build-reporter:latest') {
-                        sh """
-                            /app/specmatic-insights-reporter \
-                            --specmatic-insights-host https://insights.specmatic.in \
-                            --specmatic-reports-dir ${WORKSPACE}/build/reports/specmatic \
-                            --org-id ${SPECMATIC_ORG_ID} \
-                            --branch-ref refs/heads/${env.BRANCH_NAME} \
-                            --branch-name ${env.BRANCH_NAME} \
-                            --build-definition-id "${env.JOB_NAME}" \
-                            --build-id ${env.BUILD_NUMBER} \
-                            --repo-name ${env.JOB_NAME} \
-                            --repo-id ${env.BUILD_NUMBER} \
-                            --repo-url \$(git config --get remote.origin.url)
-                        """
-                    }
+                    sh """
+                        specmatic-insights-github-build-reporter \
+                        --specmatic-insights-host https://insights.specmatic.in \
+                        --specmatic-reports-dir build/reports/specmatic \
+                        --org-id ${SPECMATIC_ORG_ID} \
+                        --branch-ref refs/heads/${env.BRANCH_NAME ?: 'main'} \
+                        --branch-name ${env.BRANCH_NAME ?: 'main'} \
+                        --build-definition-id "${env.JOB_NAME}" \
+                        --build-id ${env.BUILD_NUMBER} \
+                        --repo-name "${env.JOB_NAME}" \
+                        --repo-id "${env.BUILD_NUMBER}" \
+                        --repo-url \$(git config --get remote.origin.url || echo 'undefined')
+                    """
                 }
             }
             // steps {
