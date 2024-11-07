@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    // tools {
-    //     nodejs 'NodeJS'  // Make sure you have NodeJS configured in Jenkins Global Tool Configuration
-    // }
+    tools {
+        nodejs 'NodeJS'  // Make sure you have NodeJS configured in Jenkins Global Tool Configuration
+    }
 
     environment {
         // Define environment variables
@@ -25,14 +25,14 @@ pipeline {
             }
         }
 
-        // stage('Setup') {
-        //     steps {
-        //         script {
-        //             // Install the reporter package globally
-        //             sh 'npm install -g @specmatic/specmatic-insights-github-build-reporter'
-        //         }
-        //     }
-        // }
+        stage('Setup') {
+            steps {
+                script {
+                    // Install the reporter package globally
+                    sh 'npm install -g @specmatic/specmatic-insights-github-build-reporter'
+                }
+            }
+        }
         
         stage('Run OpenAPI Backward compatibility Check') {
             steps {
@@ -66,11 +66,15 @@ pipeline {
                     SPECMATIC_ORG_ID: ${SPECMATIC_ORG_ID}
                     JOB_NAME: ${env.JOB_NAME}
                     BUILD_NUMBER: ${env.BUILD_NUMBER}
-                    BRANCH_NAME: ${env.BRANCH_NAME ?: 'main (fallback)'}
-                    
+                    BRANCH_NAME: ${env.BRANCH_NAME}
                     GIT Info:
                     ---------------------
                     """
+                    // Get Git URL safely
+                    def gitUrl = sh(script: 'git config --get remote.origin.url || echo "No Git URL found"', returnStdout: true).trim()
+                    echo "GIT URL: ${gitUrl}"
+                    
+                 
                     
                     // Get Git URL safely
                     def gitUrl = sh(script: 'git config --get remote.origin.url || echo "No Git URL found"', returnStdout: true).trim()
@@ -86,24 +90,24 @@ pipeline {
             }
         }
 
-        // stage('Upload Specmatic Insights Reports') {
-        //     steps {
-        //         script {
-        //             sh """
-        //                 specmatic-insights-github-build-reporter \
-        //                 --specmatic-insights-host https://insights.specmatic.in \
-        //                 --specmatic-reports-dir build/reports/specmatic \
-        //                 --org-id ${SPECMATIC_ORG_ID} \
-        //                 --branch-ref refs/heads/${env.BRANCH_NAME ?: 'main'} \
-        //                 --branch-name ${env.BRANCH_NAME ?: 'main'} \
-        //                 --build-definition-id "${env.JOB_NAME}" \
-        //                 --build-id ${env.BUILD_NUMBER} \
-        //                 --repo-name "${env.JOB_NAME}" \
-        //                 --repo-id "${env.BUILD_NUMBER}" \
-        //                 --repo-url \$(git config --get remote.origin.url || echo 'undefined')
-        //             """
-        //         }
-        //     }
+        stage('Upload Specmatic Insights Reports') {
+            steps {
+                script {
+                    sh """
+                        specmatic-insights-github-build-reporter \
+                        --specmatic-insights-host https://insights.specmatic.in \
+                        --specmatic-reports-dir pwd()/build/reports/specmatic \
+                        --org-id YOUR_SPECMATIC_ORG_ID \
+                        --branch-ref refs/heads/${env.BRANCH_NAME ?: 'main'} \
+                        --branch-name ${env.BRANCH_NAME ?: 'main'} \
+                        --build-definition-id "${env.JOB_NAME}" \
+                        --build-id ${env.BUILD_NUMBER} \
+                        --repo-name "${env.GIT_REPO_NAME}" \
+                        --repo-id "${env.GIT_REPO_ID}" \
+                        --repo-url \$(git config --get remote.origin.url || echo 'undefined')
+                    """
+                }
+            }
             // steps {
             //     script {
             //         def githubToken = env.GH_REPOSITORY_TOKEN
@@ -135,6 +139,6 @@ pipeline {
             //         """
             //     }
             // }
-        // }
+        }
     }
 }
