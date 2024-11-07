@@ -66,15 +66,11 @@ pipeline {
                     SPECMATIC_ORG_ID: ${SPECMATIC_ORG_ID}
                     JOB_NAME: ${env.JOB_NAME}
                     BUILD_NUMBER: ${env.BUILD_NUMBER}
-                    BRANCH_NAME: ${env.BRANCH_NAME}
+                    BRANCH_NAME: ${env.BRANCH_NAME ?: 'main (fallback)'}
+                    
                     GIT Info:
                     ---------------------
                     """
-                    // Get Git URL safely
-                    def gitUrl = sh(script: 'git config --get remote.origin.url || echo "No Git URL found"', returnStdout: true).trim()
-                    echo "GIT URL: ${gitUrl}"
-                    
-                 
                     
                     // Get Git URL safely
                     def gitUrl = sh(script: 'git config --get remote.origin.url || echo "No Git URL found"', returnStdout: true).trim()
