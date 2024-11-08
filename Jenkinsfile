@@ -89,6 +89,12 @@ pipeline {
                 script {
                     sh '''
                         java -jar specmatic_2.0.33.jar central-contract-repo-report
+
+                        echo "Checking report directory contents:"
+                        ls -la build/reports/specmatic/
+                        
+                        echo "Coverage report content:"
+                        cat build/reports/specmatic/coverage_report.json || echo "File not found"
                     '''
                 }
             }
