@@ -12,7 +12,7 @@ enum ProductType {
 
 type Query {
   findAvailableProducts(type: ProductType!, pageSize: Int): [Product]
-  findOffersForDate(date: Date!): [Offer]!
+  findOffersForDate(date: Date!): [Offer!]!
 }
 
 type Mutation {
