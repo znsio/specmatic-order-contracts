@@ -33,6 +33,44 @@ pipeline {
                 }
             }
         }
+
+         stage('Run Self Loop Test') {
+            parallel {
+                stage('Run Specmatic as Stub') {
+                    steps {
+                        script {
+                            catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                                sh """
+                                java -jar specmatic_2.0.33.jar stub
+                                """
+                            }
+                        }
+                    }
+                }
+                stage('Run Specmatic test') {
+                    steps {
+                        script {
+                            sleep 10
+                            sh """
+                            java -jar specmatic_2.0.33.jar test
+                            pkill -f 'java -jar'
+                            """
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Run OpenAPI Examples Validation Check') {
+                    steps {
+                        script {
+                            sh '''
+                                java -jar specmatic_2.0.33.jar examples validate \
+                                --contract-file ./io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
+                            '''
+                        }
+                    }
+        }
         
         stage('Run OpenAPI Backward compatibility Check') {
             steps {
