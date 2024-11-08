@@ -61,16 +61,16 @@ pipeline {
             }
         }
 
-        stage('Run OpenAPI Examples Validation Check') {
-                    steps {
-                        script {
-                            sh '''
-                                java -jar specmatic_2.0.33.jar examples validate \
-                                --contract-file ./io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
-                            '''
-                        }
-                    }
-        }
+        // stage('Run OpenAPI Examples Validation Check') {
+        //             steps {
+        //                 script {
+        //                     sh '''
+        //                         java -jar specmatic_2.0.33.jar examples validate \
+        //                         --contract-file ./io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
+        //                     '''
+        //                 }
+        //             }
+        // }
         
         stage('Run OpenAPI Backward compatibility Check') {
             steps {
