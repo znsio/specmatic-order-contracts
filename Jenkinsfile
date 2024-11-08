@@ -41,7 +41,7 @@ pipeline {
                         script {
                             catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                                 sh """
-                                java -jar specmatic_2.0.33.jar stub
+                                java -jar specmatic_2.0.33.jar stub io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
                                 """
                             }
                         }
@@ -52,7 +52,7 @@ pipeline {
                         script {
                             sleep 10
                             sh """
-                            java -jar specmatic_2.0.33.jar test
+                            java -jar specmatic_2.0.33.jar test --port 9000 io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
                             pkill -f 'java -jar'
                             """
                         }
