@@ -29,7 +29,7 @@ pipeline {
             steps {
                 script {
                     // Install the reporter package globally
-                    sh 'npm install -g @specmatic/specmatic-insights-github-build-reporter'
+                    sh 'npm install -g specmatic-insights-github-build-reporter'
                 }
             }
         }
