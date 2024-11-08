@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         // Define environment variables
-        SPECMATIC_ORG_ID = "66fe6c555e232d36a28fef94"  // Stored in Jenkins credentials
+        SPECMATIC_ORG_ID = "66e98ee05e232d36a28f7c6c"  // Stored in Jenkins credentials
         WORKSPACE = pwd()  // Get Jenkins workspace path
     }
     
