@@ -56,51 +56,52 @@ pipeline {
             }
         }
 
-        stage('Debug Values') {
-            steps {
-                script {
-                    echo """
-                    Debugging all values:
-                    ---------------------
-                    WORKSPACE: ${WORKSPACE}
-                    SPECMATIC_ORG_ID: ${SPECMATIC_ORG_ID}
-                    JOB_NAME: ${env.JOB_NAME}
-                    BUILD_NUMBER: ${env.BUILD_NUMBER}
-                    BRANCH_NAME: ${env.BRANCH_NAME ?: 'main (fallback)'}
+        // stage('Debug Values') {
+        //     steps {
+        //         script {
+        //             echo """
+        //             Debugging all values:
+        //             ---------------------
+        //             WORKSPACE: ${WORKSPACE}
+        //             SPECMATIC_ORG_ID: ${SPECMATIC_ORG_ID}
+        //             JOB_NAME: ${env.JOB_NAME}
+        //             BUILD_NUMBER: ${env.BUILD_NUMBER}
+        //             BRANCH_NAME: ${env.BRANCH_NAME ?: 'main (fallback)'}
                     
-                    GIT Info:
-                    ---------------------
-                    """
+        //             GIT Info:
+        //             ---------------------
+        //             """
                     
-                    // Get Git URL safely
-                    def gitUrl = sh(script: 'git config --get remote.origin.url || echo "No Git URL found"', returnStdout: true).trim()
-                    echo "GIT URL: ${gitUrl}"
+        //             // Get Git URL safely
+        //             def gitUrl = sh(script: 'git config --get remote.origin.url || echo "No Git URL found"', returnStdout: true).trim()
+        //             echo "GIT URL: ${gitUrl}"
                     
-                    // Check reports directory
-                    sh """
-                        echo "Reports Directory Check:"
-                        echo "------------------------"
-                        ls -la ${WORKSPACE}/build/reports/specmatic || echo "Reports directory not found"
-                    """
-                }
-            }
-        }
+        //             // Check reports directory
+        //             sh """
+        //                 echo "Reports Directory Check:"
+        //                 echo "------------------------"
+        //                 ls -la ${WORKSPACE}/build/reports/specmatic || echo "Reports directory not found"
+        //             """
+        //         }
+        //     }
+        // }
 
         stage('Upload Specmatic Insights Reports') {
             steps {
                 script {
+                    def gitUrl = sh(script: 'git config --get remote.origin.url || echo "No Git URL found"', returnStdout: true).trim()
                     sh """
                         specmatic-insights-github-build-reporter \
                         --specmatic-insights-host https://insights.specmatic.in \
-                        --specmatic-reports-dir pwd()/build/reports/specmatic \
-                        --org-id YOUR_SPECMATIC_ORG_ID \
-                        --branch-ref refs/heads/${env.BRANCH_NAME ?: 'main'} \
-                        --branch-name ${env.BRANCH_NAME ?: 'main'} \
+                        --specmatic-reports-dir build/reports/specmatic \
+                        --org-id ${SPECMATIC_ORG_ID} \
+                        --branch-ref refs/heads/${env.BRANCH_NAME ?: 'master'} \
+                        --branch-name ${env.BRANCH_NAME ?: 'master'} \
                         --build-definition-id "${env.JOB_NAME}" \
                         --build-id ${env.BUILD_NUMBER} \
                         --repo-name "${env.GIT_REPO_NAME}" \
                         --repo-id "${env.GIT_REPO_ID}" \
-                        --repo-url \$(git config --get remote.origin.url || echo 'undefined')
+                        --repo-url ${gitUrl}
                     """
                 }
             }
