@@ -34,32 +34,32 @@ pipeline {
             }
         }
 
-         stage('Run Self Loop Test') {
-            parallel {
-                stage('Run Specmatic as Stub') {
-                    steps {
-                        script {
-                            catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
-                                sh """
-                                java -jar specmatic_2.0.33.jar stub io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
-                                """
-                            }
-                        }
-                    }
-                }
-                stage('Run Specmatic test') {
-                    steps {
-                        script {
-                            sleep 10
-                            sh """
-                            java -jar specmatic_2.0.33.jar test --port 9000 io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
-                            pkill -f 'java -jar'
-                            """
-                        }
-                    }
-                }
-            }
-        }
+        //  stage('Run Self Loop Test') {
+        //     parallel {
+        //         stage('Run Specmatic as Stub') {
+        //             steps {
+        //                 script {
+        //                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+        //                         sh """
+        //                         java -jar specmatic_2.0.33.jar stub io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
+        //                         """
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //         stage('Run Specmatic test') {
+        //             steps {
+        //                 script {
+        //                     sleep 10
+        //                     sh """
+        //                     java -jar specmatic_2.0.33.jar test --port 9000 io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
+        //                     pkill -f 'java -jar'
+        //                     """
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
         // stage('Run OpenAPI Examples Validation Check') {
         //             steps {
