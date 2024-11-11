@@ -47,6 +47,14 @@ jobs:
         run: |
           echo "Running Spectral linter on: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
           spectral lint io/**/*.yaml
+
+      - name: Validate GraphQL examples
+        run: |
+          docker run -v "$(pwd):/central-contract-repo:rw" \
+            --env-file env.list \
+            --entrypoint /bin/sh \
+            znsio/specmatic-graphql-trial \
+            -c "cd /central-contract-repo && java -jar /usr/bin/specmatic-graphql.jar examples validate --spec-file io/specmatic/examples/store/graphql/products_bff.graphqls"
       
       - name: Create environment file
         run: |
