@@ -4,9 +4,6 @@ info:
   version: '1.0'
 servers:
   - url: http://localhost:8080
-tags:
-  - name: WIP
-    description: API still under development
 paths:
   /products:
     summary: Create a new product
@@ -133,26 +130,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequest'
-    get:
-      summary: Retrieve order information
-      tags:
-        - WIP
-      parameters:
-        - in: query
-          name: orderId
-          schema:
-            type: integer
-          required: false
-          description: ID of the order to retrieve. If not provided, returns all orders.
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Order'
 components:
   schemas:
     Product:
