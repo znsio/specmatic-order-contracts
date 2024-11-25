@@ -3,7 +3,7 @@
   "request": {
     "name": "Smartphone",
     "type": "GADGET",
-    "inventory": 98
+    "inventory": 100
   },
   "response": {
     "id": 15
