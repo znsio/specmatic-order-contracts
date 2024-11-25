@@ -177,7 +177,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadRequest'
     get:
-      summary: Retrieve order information, this is work in progress.
+      summary: Retrieve order information
       tags:
         - WIP
       parameters:
