@@ -20,6 +20,7 @@ enum ProductType {
   FOOD = 2;
   GADGET = 3;
   OTHER = 4;
+  TEST = 5;
 }
 
 message findAvailableProductsRequest {
