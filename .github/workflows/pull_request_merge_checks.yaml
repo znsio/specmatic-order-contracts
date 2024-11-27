@@ -190,12 +190,15 @@ jobs:
           jobs=("spectral-lint-openAPI" "specmatic-examples-validation-openAPI"
           "specmatic-backward-compatibility-openAPI")
 
+
           for job in "${jobs[@]}"; do
-            result="${{ needs[$job].result }}"
+            # Directly check the result for each job
+            result="${{ needs.${job}.result }}"
             echo "$job result: $result"
+
             if [[ "$result" == "failure" ]]; then
-              echo "$job failed!"
-              exit 1
+            echo "$job failed!"
+            exit 1
             fi
           done
 
@@ -213,8 +216,10 @@ jobs:
           jobs=("spectral-lint-graphQL" "specmatic-examples-validation-graphQL"
           "specmatic-backward-compatibility-graphQL")
 
+
           for job in "${jobs[@]}"; do
-            result="${{ needs[$job].result }}"
+            # Directly check the result for each job
+            result="${{ needs.${job}.result }}"
             echo "$job result: $result"
             if [[ "$result" == "failure" ]]; then
               echo "$job failed!"
@@ -238,10 +243,8 @@ jobs:
           then
             echo "OpenAPI related jobs failed!"
             exit 1
-          fi
-          if [[ "${{ needs.build-summary-graphQL.result }}" == "failure" ]];
+          fi if [[ "${{ needs.build-summary-graphQL.result }}" == "failure" ]];
           then
             echo "GraphQL related jobs failed!"
             exit 1
-          fi
-          echo "All build jobs completed successfully!"
+          fi echo "All build jobs completed successfully!"
