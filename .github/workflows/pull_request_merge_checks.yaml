@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: detect-changes-yaml
     if: '${{ needs.detect-changes-yaml.outputs.yaml_changed == ''true'' }}'
-    name: YAML Validation
+    name: Specmatic YAML Validation
     steps:
       - uses: actions/checkout@v4
         with:
@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: detect-changes-graphql
     if: '${{ needs.detect-changes-graphql.outputs.graphql_changed == ''true'' }}'
-    name: GraphQL Validation
+    name: Specmatic GraphQL Validation
     steps:
       - uses: actions/checkout@v4
         with:
