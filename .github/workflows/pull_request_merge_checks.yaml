@@ -179,50 +179,62 @@ jobs:
             -c "git config --global --add safe.directory /central-contract-repo && cd /central-contract-repo && java -jar /usr/bin/specmatic-graphql.jar backwardCompatibilityCheck"
   build-summary-openAPI:
     needs:
-    - spectral-lint-openAPI
-    - specmatic-examples-validation-openAPI
-    - specmatic-backward-compatibility-openAPI
+      - linting-openAPI
+      - specmatic-examples-validation-openAPI
+      - specmatic-backward-compatibility-openAPI
     if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Check Pipeline Status
-        run: |
-          if [[ "${{ needs.spectral-lint-openAPI.result }}" == "failure" ]]; then
-            echo "spectral-lint-openAPI failed!"
+        run: >
+          if [[ "${{ needs.linting-openAPI.result }}" == "failure" ]];
+          then
+            echo "linting-openAPI failed!"
             exit 1
           fi
-          if [[ "${{ needs.specmatic-examples-validation-openAPI.result }}" == "failure" ]]; then
+
+          if [[ "${{ needs.specmatic-examples-validation-openAPI.result }}" ==
+          "failure" ]]; then
             echo "specmatic-examples-validation-openAPI failed!"
             exit 1
           fi
-          if [[ "${{ needs.specmatic-backward-compatibility-openAPI.result }}" == "failure" ]]; then
+
+          if [[ "${{ needs.specmatic-backward-compatibility-openAPI.result }}"
+          == "failure" ]]; then
             echo "specmatic-backward-compatibility-openAPI failed!"
             exit 1
           fi
+
           echo "All OpenAPI build jobs completed successfully!"
   build-summary-graphQL:
     needs:
-      - spectral-lint-graphQL
+      - linting-graphQL
       - specmatic-examples-validation-graphQL
       - specmatic-backward-compatibility-graphQL
     if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Check Pipeline Status
-        run: |
-        if [[ "${{ needs.spectral-lint-graphQL.result }}" == "failure" ]]; then
-          echo "spectral-lint-graphQL failed!"
-          exit 1
-        fi
-        if [[ "${{ needs.specmatic-examples-validation-graphQL.result }}" == "failure" ]]; then
-          echo "specmatic-examples-validation-graphQL failed!"
-          exit 1
-        fi
-        if [[ "${{ needs.specmatic-backward-compatibility-graphQL.result }}" == "failure" ]]; then
-          echo "specmatic-backward-compatibility-graphQL failed!"
-          exit 1
-        fi
-        echo "All GraphQL build jobs completed successfully!"
+        run: >
+          if [[ "${{ needs.linting-graphQL.result }}" == "failure" ]];
+          then
+            echo "linting-graphQL failed!"
+            exit 1
+          fi
+
+          if [[ "${{ needs.specmatic-examples-validation-graphQL.result }}" ==
+          "failure" ]]; then
+            echo "specmatic-examples-validation-graphQL failed!"
+            exit 1
+          fi
+
+          if [[ "${{ needs.specmatic-backward-compatibility-graphQL.result }}"
+          == "failure" ]]; then
+            echo "specmatic-backward-compatibility-graphQL failed!"
+            exit 1
+          fi
+
+          echo "All GraphQL build jobs completed successfully!"
   overall-build-summary:
     needs:
       - build-summary-graphQL
