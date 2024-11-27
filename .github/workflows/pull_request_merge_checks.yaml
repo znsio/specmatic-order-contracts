@@ -49,7 +49,7 @@ jobs:
           files: |
             **/*_examples/**/*.json
             **/*_examples/**/*.yaml
-  spectral-lint-openAPI:
+  linting-openAPI:
     needs: detect-changes
     if: 'needs.detect-changes.outputs.openapi_changed == ''true'' '
     runs-on: ubuntu-latest
@@ -70,7 +70,7 @@ jobs:
             echo "Linting $file..."
             spectral lint "$file"
           done
-  spectral-lint-graphQL:
+  linting-graphQL:
     needs: detect-changes
     if: needs.detect-changes.outputs.graphql_changed == 'true'
     runs-on: ubuntu-latest
@@ -186,12 +186,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check Pipeline Status
-        run: |
-          if [[ "${{ needs.spectral-lint-openAPI.result }}" == "failure" || \
-                "${{ needs.specmatic-examples-validation-openAPI.result }}" == "failure" || \
-                "${{ needs.specmatic-backward-compatibility-openAPI.result }}" == "failure" ]]; then
-            exit 1
-          fi
+        run: >
+          jobs=("spectral-lint-openAPI" "specmatic-examples-validation-openAPI"
+          "specmatic-backward-compatibility-openAPI")
+
+          for job in "${jobs[@]}"; do
+            result="${{ needs[$job].result }}"
+            echo "$job result: $result"
+            if [[ "$result" == "failure" ]]; then
+              echo "$job failed!"
+              exit 1
+            fi
+          done
+
+          echo "All OpenAPI build jobs completed successfully!"
   build-summary-graphQL:
     needs:
       - spectral-lint-graphQL
@@ -201,9 +209,42 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check Pipeline Status
-        run: |
-          if [[ "${{ needs.spectral-lint-graphQL.result }}" == "failure" || \
-                "${{ needs.specmatic-examples-validation-graphQL.result }}" == "failure" || \
-                "${{ needs.specmatic-backward-compatibility-graphQL.result }}" == "failure" ]]; then
-            exit 1
-          fi
+        run: >
+          jobs=("spectral-lint-graphQL" "specmatic-examples-validation-graphQL"
+          "specmatic-backward-compatibility-graphQL")
+
+          for job in "${jobs[@]}"; do
+            result="${{ needs[$job].result }}"
+            echo "$job result: $result"
+            if [[ "$result" == "failure" ]]; then
+              echo "$job failed!"
+              exit 1
+            fi
+          done
+
+          echo "All GraphQL build jobs completed successfully!"
+  overall-build-summary:
+    needs:
+      - build-summary-graphQL
+      - build-summary-openAPI
+  if: always()
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Check OpenAPI and GraphQL Summary
+      run: |
+        # Check if any OpenAPI related jobs failed
+        if [[ "${{ needs.build-summary-openAPI.result }}" == "failure" ]]; then
+          echo "OpenAPI related jobs failed!"
+          exit 1
+        fi
+
+        # Check if any GraphQL related jobs failed
+        if [[ "${{ needs.build-summary-graphQL.result }}" == "failure" ]]; then
+          echo "GraphQL related jobs failed!"
+          exit 1
+        fi
+
+        # If no failures, print success message
+        echo "All build jobs completed successfully!"
