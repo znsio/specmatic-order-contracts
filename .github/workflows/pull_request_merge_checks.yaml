@@ -9,21 +9,16 @@ on:
       - main
 
 jobs:
-  build:
+  get-changed-yaml-files:
     runs-on: ubuntu-latest
-    name: Check API Contracts
+    name: Get changed yaml files
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
 
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-
-      - name: Get changed yaml files
+      - uses: tj-actions/changed-files@v34
         id: changed-files-specific
-        uses: tj-actions/changed-files@v34
         with:
           files: |
             io/**/*.yaml
@@ -31,33 +26,59 @@ jobs:
             io/**/*.json
           files_ignore: kafka.yaml #skipping it as async is under private-beta
 
-      - name: Get changed GraphQLS files
+  get-changed-graphqls-files:
+    runs-on: ubuntu-latest
+    name: Get changed GraphQLS files
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
+
+      - uses: tj-actions/changed-files@v34
         id: changed-graphqls-files
-        uses: tj-actions/changed-files@v34
         with:
           files: |
             io/**/*.graphqls
-  
-      - name: Install Spectral Linter
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
-        run: npm install -g @stoplight/spectral-cli
 
-      - name: Run Spectral linter on changed files
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
-        run: |
+  install-spectral-linter:
+    runs-on: ubuntu-latest
+    name: Install Spectral Linter
+    needs: get-changed-yaml-files
+    if: steps.changed-files-specific.outputs.any_changed == 'true'
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - run: npm install -g @stoplight/spectral-cli
+
+  run-spectral-linter:
+    runs-on: ubuntu-latest
+    name: Run Spectral linter on changed files
+    needs: install-spectral-linter
+    if: steps.changed-files-specific.outputs.any_changed == 'true'
+    steps:
+      - run: |
           echo "Running Spectral linter on: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
           spectral lint io/**/*.yaml
 
-      - name: Validate GraphQL examples
-        run: |
+  validate-graphql-examples:
+    runs-on: ubuntu-latest
+    name: Validate GraphQL examples
+    needs: get-changed-graphqls-files
+    if: steps.changed-graphqls-files.outputs.any_changed == 'true'
+    steps:
+      - run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
             --entrypoint /bin/sh \
             znsio/specmatic-graphql-trial \
             -c "cd /central-contract-repo && java -jar /usr/src/app/specmatic-graphql.jar examples validate --spec-file io/specmatic/examples/store/graphql/products_bff.graphqls"
-      
-      - name: Create environment file
-        run: |
-            # echo "GITHUB_REF=${{ github.ref }}" >> env.list
+
+  create-environment-file:
+    runs-on: ubuntu-latest
+    name: Create environment file
+    steps:
+      - run: |
             echo "GITHUB_SHA=${{ github.sha }}" >> env.list
             echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
             echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
@@ -67,19 +88,26 @@ jobs:
                 echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
             else
               echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
-            fi     
 
-      - name: Run OpenAPI backward compatibility check on changed files
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
-        run: |
+  run-openapi-backward-compatibility-check:
+    runs-on: ubuntu-latest
+    name: Run OpenAPI backward compatibility check on changed files
+    needs: get-changed-yaml-files
+    if: steps.changed-files-specific.outputs.any_changed == 'true'
+    steps:
+      - run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
             --env-file env.list \
             --entrypoint /bin/sh znsio/specmatic \
             -c "git config --global --add safe.directory /central-contract-repo && cd /central-contract-repo && java -jar /usr/src/app/specmatic.jar backward-compatibility-check --base-branch origin/main"
 
-      - name: Run GraphQL backward compatibility check on changed files
-        if: steps.changed-graphqls-files.outputs.any_changed == 'true'
-        run: |
+  run-graphql-backward-compatibility-check:
+    runs-on: ubuntu-latest
+    name: Run GraphQL backward compatibility check on changed files
+    needs: get-changed-graphqls-files
+    if: steps.changed-graphqls-files.outputs.any_changed == 'true'
+    steps:
+      - run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
             --env-file env.list \
             --entrypoint /bin/sh \
