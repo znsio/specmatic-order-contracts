@@ -149,7 +149,7 @@ jobs:
     needs:
       - spectral-lint
       - specmatic-examples-validation
-      - specmatic-compatibility
+      - specmatic-backward-compatibility
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -157,6 +157,6 @@ jobs:
         run: |
           if [[ "${{ needs.lint.result }}" == "failure" || \
                 "${{ needs.examples-validation.result }}" == "failure" || \
-                "${{ needs.compatibility.result }}" == "failure" ]]; then
+                "${{ needs.specmatic-backward-compatibility.result }}" == "failure" ]]; then
             exit 1
           fi
