@@ -1,24 +1,21 @@
 name: CI
-
-on:
+'on':
   push:
     branches:
       - main
   pull_request:
     branches:
       - main
-
 jobs:
   yaml-validation:
     runs-on: ubuntu-latest
     name: YAML Validation
     outputs:
-      any_changed: ${{ steps.changed-files-specific.outputs.any_changed }}
+      any_changed: '${{ steps.changed-files-specific.outputs.any_changed }}'
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
-
+          fetch-depth: 0
       - uses: tj-actions/changed-files@v34
         id: changed-files-specific
         with:
@@ -26,106 +23,88 @@ jobs:
             io/**/*.yaml
             io/**/*.yml
             io/**/*.json
-          files_ignore: kafka.yaml  # skipping it as async is under private-beta
-
-      # Install Spectral Linter for YAML files
+          files_ignore: kafka.yaml
       - name: Install Spectral Linter for YAML
-        if: ${{ steps.changed-files-specific.outputs.any_changed == 'true' }}
+        if: '${{ steps.changed-files-specific.outputs.any_changed == ''true'' }}'
         run: |
           npm install -g @stoplight/spectral-cli
-
-      # Run Spectral Linter on changed YAML files
       - name: Run Spectral Linter on YAML files
-        if: ${{ steps.changed-files-specific.outputs.any_changed == 'true' }}
+        if: '${{ steps.changed-files-specific.outputs.any_changed == ''true'' }}'
         run: |
           spectral lint io/**/*.yaml
-
-      # Run OpenAPI examples validation for YAML files
       - name: Run OpenAPI examples validation check
-        if: ${{ steps.changed-files-specific.outputs.any_changed == 'true' }}
-        run: |
-          docker run -v "$(pwd):/central-contract-repo:rw" znsio/specmatic examples validate \
+        if: '${{ steps.changed-files-specific.outputs.any_changed == ''true'' }}'
+        run: >
+          docker run -v "$(pwd):/central-contract-repo:rw" znsio/specmatic
+          examples validate \
             --contract-file /central-contract-repo/io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
-
-     - name: Create environment file
+      - name: Create environment file
         run: |
-            # echo "GITHUB_REF=${{ github.ref }}" >> env.list
-            echo "GITHUB_SHA=${{ github.sha }}" >> env.list
-            echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
-            echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
-            echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
-            echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
-            if [ -z "${{ github.base_ref }}" ]; then
-                echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
-            else
-              echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
-            fi     
-
+          # echo "GITHUB_REF=${{ github.ref }}" >> env.list
+          echo "GITHUB_SHA=${{ github.sha }}" >> env.list
+          echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
+          echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
+          echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
+          echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
+          if [ -z "${{ github.base_ref }}" ]; then
+              echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
+          else
+            echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
+          fi     
       - name: Run OpenAPI backward compatibility check on changed files
-        if: ${{ steps.changed-files-specific.outputs.any_changed == 'true' }}
+        if: '${{ steps.changed-files-specific.outputs.any_changed == ''true'' }}'
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
             --env-file env.list \
             --entrypoint /bin/sh znsio/specmatic \
             -c "git config --global --add safe.directory /central-contract-repo && cd /central-contract-repo && java -jar /usr/src/app/specmatic.jar backward-compatibility-check --base-branch origin/main"
-
   graphql-validation:
     runs-on: ubuntu-latest
     name: GraphQL Validation
     outputs:
-      any_changed: ${{ steps.changed-graphqls-files.outputs.any_changed }}
+      any_changed: '${{ steps.changed-graphqls-files.outputs.any_changed }}'
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
-
+          fetch-depth: 0
       - uses: tj-actions/changed-files@v34
         id: changed-graphqls-files
         with:
           files: |
             io/**/*.graphqls
-
-      # Install Spectral Linter for GraphQL files
       - name: Install Spectral Linter for GraphQL
-        if: ${{ steps.changed-graphqls-files.outputs.any_changed == 'true' }}
+        if: '${{ steps.changed-graphqls-files.outputs.any_changed == ''true'' }}'
         run: |
           npm install -g @stoplight/spectral-cli
-
-      # Run Spectral Linter on changed GraphQL files
       - name: Run Spectral Linter on GraphQL files
-        if: ${{ steps.changed-graphqls-files.outputs.any_changed == 'true' }}
+        if: '${{ steps.changed-graphqls-files.outputs.any_changed == ''true'' }}'
         run: |
           spectral lint io/**/*.graphqls
-
-      # Run GraphQL examples validation check
       - name: Validate GraphQL examples
-        if: ${{ steps.changed-graphqls-files.outputs.any_changed == 'true' }}
+        if: '${{ steps.changed-graphqls-files.outputs.any_changed == ''true'' }}'
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
             --entrypoint /bin/sh \
             znsio/specmatic-graphql-trial \
             -c "cd /central-contract-repo && java -jar /usr/src/app/specmatic-graphql.jar examples validate --spec-file io/specmatic/examples/store/graphql/products_bff.graphqls"
-
       - name: Create environment file
         run: |
-            # echo "GITHUB_REF=${{ github.ref }}" >> env.list
-            echo "GITHUB_SHA=${{ github.sha }}" >> env.list
-            echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
-            echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
-            echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
-            echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
-            if [ -z "${{ github.base_ref }}" ]; then
-                echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
-            else
-              echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
-            fi     
-      # Run GraphQL backward compatibility check on changed files
+          # echo "GITHUB_REF=${{ github.ref }}" >> env.list
+          echo "GITHUB_SHA=${{ github.sha }}" >> env.list
+          echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
+          echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
+          echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
+          echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
+          if [ -z "${{ github.base_ref }}" ]; then
+              echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
+          else
+            echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
+          fi     
       - name: Run GraphQL backward compatibility check
-        if: ${{ steps.changed-graphqls-files.outputs.any_changed == 'true' }}
-         run: |
+        if: '${{ steps.changed-graphqls-files.outputs.any_changed == ''true'' }}'
+        run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
             --env-file env.list \
             --entrypoint /bin/sh \
             znsio/specmatic-graphql-trial \
             -c "git config --global --add safe.directory /central-contract-repo && cd /central-contract-repo && java -jar /usr/src/app/specmatic-graphql.jar backward-compatibility-check --base-branch origin/main"
-
