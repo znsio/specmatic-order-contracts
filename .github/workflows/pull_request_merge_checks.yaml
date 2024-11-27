@@ -225,18 +225,21 @@ jobs:
           echo "All GraphQL build jobs completed successfully!"
   overall-build-summary:
     needs:
-      - build-summary-graphQL
-      - build-summary-openAPI
+    - build-summary-graphQL
+    - build-summary-openAPI
     if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Check OpenAPI and GraphQL Summary
-        run: >
-          if [[ "${{ needs.build-summary-openAPI.result }}" == "failure" ]];
-          then echo "OpenAPI related jobs failed!" exit 1 fi if [[ "${{
-          needs.build-summary-graphQL.result }}" == "failure" ]]; then
-            echo "GraphQL related jobs failed!"
-            exit 1
-          fi echo "All build jobs completed successfully!"
+        run: |
+        if [[ "${{ needs.build-summary-openAPI.result }}" == "failure" ]]; then
+          echo "OpenAPI related jobs failed!"
+          exit 1
+        fi
+        if [[ "${{ needs.build-summary-graphQL.result }}" == "failure" ]]; then
+          echo "GraphQL related jobs failed!"
+          exit 1
+        fi
+        echo "All build jobs completed successfully!"
