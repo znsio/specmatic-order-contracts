@@ -92,7 +92,7 @@ jobs:
       - name: Validate OpenAPI examples
         if: >-
           needs.detect-changes.outputs.examples_changed == 'true' ||
-          eeds.detect-changes.outputs.openapi_changed == 'true'
+          needs.detect-changes.outputs.openapi_changed == 'true'
         run: >
           docker run -v "$(pwd):/central-contract-repo:rw" znsio/specmatic
           examples validate \
@@ -100,7 +100,7 @@ jobs:
       - name: Validate GraphQL examples
         if: >-
           needs.detect-changes.outputs.examples_changed == 'true' ||
-          eeds.detect-changes.outputs.graphql_changed == 'true'
+          needs.detect-changes.outputs.graphql_changed == 'true'
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
             --entrypoint /bin/sh \
