@@ -31,7 +31,11 @@ jobs:
             io/**/*.yaml
             io/**/*.yml
             io/**/*.json
-          files_ignore: kafka.yaml
+          files_ignore: |
+          kafka.yaml
+          **/*_examples/**/*.json
+          **/*_examples/**/*.yaml
+
       - name: Detect GraphQL Changes
         id: changed-graphqls-files
         uses: tj-actions/changed-files@v34
