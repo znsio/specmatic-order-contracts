@@ -47,20 +47,21 @@ jobs:
           docker run -v "$(pwd):/central-contract-repo:rw" znsio/specmatic examples validate \
             --contract-file /central-contract-repo/io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
 
-      # Create environment file before running the validation steps
-      - name: Create environment file for YAML validation
+     - name: Create environment file
         run: |
-          echo "GITHUB_SHA=${{ github.sha }}" >> env.list
-          echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
-          echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
-          echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
-          echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
-          if [ -z "${{ github.base_ref }}" ]; then
-              echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
-          else
-            echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
-      # Run OpenAPI backward compatibility check on changed YAML files
-      - name: Run OpenAPI backward compatibility check
+            # echo "GITHUB_REF=${{ github.ref }}" >> env.list
+            echo "GITHUB_SHA=${{ github.sha }}" >> env.list
+            echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
+            echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
+            echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
+            echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
+            if [ -z "${{ github.base_ref }}" ]; then
+                echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
+            else
+              echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
+            fi     
+
+      - name: Run OpenAPI backward compatibility check on changed files
         if: ${{ steps.changed-files-specific.outputs.any_changed == 'true' }}
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
@@ -105,22 +106,23 @@ jobs:
             znsio/specmatic-graphql-trial \
             -c "cd /central-contract-repo && java -jar /usr/src/app/specmatic-graphql.jar examples validate --spec-file io/specmatic/examples/store/graphql/products_bff.graphqls"
 
-      # Create environment file before running the validation steps
-      - name: Create environment file for GraphQL validation
+      - name: Create environment file
         run: |
-          echo "GITHUB_SHA=${{ github.sha }}" >> env.list
-          echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
-          echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
-          echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
-          echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
-          if [ -z "${{ github.base_ref }}" ]; then
-              echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
-          else
-            echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
+            # echo "GITHUB_REF=${{ github.ref }}" >> env.list
+            echo "GITHUB_SHA=${{ github.sha }}" >> env.list
+            echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
+            echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
+            echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
+            echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
+            if [ -z "${{ github.base_ref }}" ]; then
+                echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
+            else
+              echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
+            fi     
       # Run GraphQL backward compatibility check on changed files
       - name: Run GraphQL backward compatibility check
         if: ${{ steps.changed-graphqls-files.outputs.any_changed == 'true' }}
-        run: |
+         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
             --env-file env.list \
             --entrypoint /bin/sh \
