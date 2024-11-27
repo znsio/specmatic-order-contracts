@@ -245,13 +245,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Check OpenAPI and GraphQL Summary
-        run: >
-          if [[ "${{ needs.build-summary-openAPI.result }}" == "failure" ]];
-          then
+        run: |
+          if [[ "${{ needs.build-summary-openAPI.result }}" == "failure" ]]; then
             echo "OpenAPI related jobs failed!"
             exit 1
-          fi if [[ "${{ needs.build-summary-graphQL.result }}" == "failure" ]];
-          then
+          fi
+          if [[ "${{ needs.build-summary-graphQL.result }}" == "failure" ]]; then
             echo "GraphQL related jobs failed!"
             exit 1
-          fi echo "All build jobs completed successfully!"
+          fi
+          echo "All build jobs completed successfully!"
+
