@@ -93,7 +93,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Validate OpenAPI examples
+      - name: Validate Specmatic OpenAPI examples
         if: >-
           needs.detect-changes.outputs.examples_changed == 'true' ||
           needs.detect-changes.outputs.openapi_changed == 'true'
@@ -101,7 +101,7 @@ jobs:
           docker run -v "$(pwd):/central-contract-repo:rw" znsio/specmatic
           examples validate \
            --contract-file /central-contract-repo/io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
-      - name: Validate GraphQL examples
+      - name: Validate Specmatic GraphQL examples
         if: >-
           needs.detect-changes.outputs.examples_changed == 'true' ||
           needs.detect-changes.outputs.graphql_changed == 'true'
@@ -134,14 +134,14 @@ jobs:
           else
             echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
           fi
-      - name: OpenAPI Compatibility Check
+      - name: Specmatic OpenAPI Backward Compatibility Check
         if: needs.detect-changes.outputs.openapi_changed == 'true'
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
             --env-file env.list \
             --entrypoint /bin/sh znsio/specmatic \
             -c "git config --global --add safe.directory /central-contract-repo && cd /central-contract-repo && java -jar /usr/src/app/specmatic.jar backward-compatibility-check --base-branch origin/main"
-      - name: GraphQL Compatibility Check
+      - name: Specmatic GraphQL Backward Compatibility Check
         if: needs.detect-changes.outputs.graphql_changed == 'true'
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
