@@ -32,9 +32,9 @@ jobs:
             io/**/*.yml
             io/**/*.json
           files_ignore: |
-          kafka.yaml
-          **/*_examples/**/*.json
-          **/*_examples/**/*.yaml
+            kafka.yaml
+            **/*_examples/**/*.json
+            **/*_examples/**/*.yaml
 
       - name: Detect GraphQL Changes
         id: changed-graphqls-files
