@@ -28,6 +28,19 @@ jobs:
             io/**/*.json
           files_ignore: kafka.yaml  # skipping it as async is under private-beta
 
+      # Create environment file before running the validation steps
+      - name: Create environment file for YAML validation
+        run: |
+          echo "GITHUB_SHA=${{ github.sha }}" >> env.list
+          echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
+          echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
+          echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
+          echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
+          if [ -z "${{ github.base_ref }}" ]; then
+              echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
+          else
+            echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
+
       # Install Spectral Linter for YAML files
       - name: Install Spectral Linter for YAML
         if: ${{ steps.changed-files-specific.outputs.any_changed == 'true' }}
@@ -72,6 +85,19 @@ jobs:
           files: |
             io/**/*.graphqls
 
+      # Create environment file before running the validation steps
+      - name: Create environment file for GraphQL validation
+        run: |
+          echo "GITHUB_SHA=${{ github.sha }}" >> env.list
+          echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
+          echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
+          echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
+          echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
+          if [ -z "${{ github.base_ref }}" ]; then
+              echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
+          else
+            echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
+
       # Install Spectral Linter for GraphQL files
       - name: Install Spectral Linter for GraphQL
         if: ${{ steps.changed-graphqls-files.outputs.any_changed == 'true' }}
@@ -103,17 +129,3 @@ jobs:
             znsio/specmatic-graphql-trial \
             -c "git config --global --add safe.directory /central-contract-repo && cd /central-contract-repo && java -jar /usr/src/app/specmatic-graphql.jar backward-compatibility-check --base-branch origin/main"
 
-  create-environment-file:
-    runs-on: ubuntu-latest
-    name: Create environment file
-    steps:
-      - run: |
-          echo "GITHUB_SHA=${{ github.sha }}" >> env.list
-          echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
-          echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
-          echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
-          echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
-          if [ -z "${{ github.base_ref }}" ]; then
-              echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
-          else
-            echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
