@@ -108,12 +108,12 @@ jobs:
   summary:
     runs-on: ubuntu-latest
     needs:
-      - yaml-validation
-      - graphql-validation
+      - specmatic-yaml-validation
+      - specmatic-graphql-validation
     steps:
       - name: Summarize Results
         run: >
-          echo "YAML Validation Result: ${{ needs.yaml-validation.result }}"
+          echo "YAML Validation Result: ${{ needs.specmatic-yaml-validation.result }}"
 
-          echo "GraphQL Validation Result: ${{ needs.graphql-validation.result
+          echo "GraphQL Validation Result: ${{ needs.specmatic-graphql-validation.result
           }}"
