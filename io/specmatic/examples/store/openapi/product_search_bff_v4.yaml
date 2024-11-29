@@ -33,7 +33,7 @@ paths:
                 inventory:
                   type: integer
                   minimum: 1
-                  maximum: 101
+                  maximum: 100
             examples:
               SUCCESS:
                 value:
