@@ -50,6 +50,10 @@ jobs:
             **/*_examples/**/*.json
             **/*_examples/**/*.yaml
   setup-environment:
+    needs: detect-changes
+    if: >-
+      needs.detect-changes.outputs.openapi_changed == 'true' ||
+      needs.detect-changes.outputs.graphql_changed == 'true' 
     runs-on: ubuntu-latest 
     steps:
       - name: Create Environment File
@@ -138,7 +142,7 @@ jobs:
             -c "cd /central-contract-repo && java -jar /usr/src/app/specmatic-graphql.jar examples validate --spec-file io/specmatic/examples/store/graphql/products_bff.graphqls"
                
   specmatic-backward-compatibility-openAPI:
-    needs: detect-changes
+    needs: setup-environment
     runs-on: ubuntu-latest
     if: needs.detect-changes.outputs.openapi_changed == 'true'
     steps:
@@ -153,7 +157,7 @@ jobs:
             --entrypoint /bin/sh znsio/specmatic \
             -c "git config --global --add safe.directory /central-contract-repo && cd /central-contract-repo && java -jar /usr/src/app/specmatic.jar backward-compatibility-check --base-branch origin/main"
   specmatic-backward-compatibility-graphQL:
-    needs: detect-changes
+    needs: setup-environment
     runs-on: ubuntu-latest
     if: needs.detect-changes.outputs.graphql_changed == 'true'
     steps:
