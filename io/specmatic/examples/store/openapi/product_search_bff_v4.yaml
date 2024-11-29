@@ -26,14 +26,14 @@ paths:
                 type:
                   type: string
                   enum:
-                    - gadget
-                    - book
-                    - food
-                    - other
+                    - gadgets
+                    - books
+                    - foods
+                    - others
                 inventory:
                   type: integer
                   minimum: 1
-                  maximum: 100
+                  maximum: 101
             examples:
               SUCCESS:
                 value:
