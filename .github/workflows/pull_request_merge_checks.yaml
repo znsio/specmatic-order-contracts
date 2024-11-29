@@ -57,6 +57,7 @@ jobs:
     runs-on: ubuntu-latest 
     steps:
       - name: Create Environment File
+        run: echo "Environment variables are set"
         env:
         GITHUB_SHA: ${{ github.sha }}
         GITHUB_REPOSITORY: ${{ github.repository }}
