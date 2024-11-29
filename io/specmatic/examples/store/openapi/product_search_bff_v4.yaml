@@ -26,10 +26,10 @@ paths:
                 type:
                   type: string
                   enum:
-                    - gadgets
-                    - books
-                    - foods
-                    - others
+                    - gadget
+                    - book
+                    - food
+                    - other
                 inventory:
                   type: integer
                   minimum: 1
