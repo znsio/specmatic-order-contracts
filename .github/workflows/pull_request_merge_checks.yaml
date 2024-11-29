@@ -66,7 +66,7 @@ jobs:
           GITHUB_HEAD_REF: ${{ github.head_ref }}
           GITHUB_BASE_REF: ${{ github.base_ref || github.ref }}
   linting-openAPI:
-    needs: detect-changes
+    needs: setup-environment
     if: 'needs.detect-changes.outputs.openapi_changed == ''true'' '
     runs-on: ubuntu-latest
     steps:
@@ -87,7 +87,7 @@ jobs:
             spectral lint "$file"
           done
   linting-graphQL:
-    needs: detect-changes
+    needs: setup-environment
     if: needs.detect-changes.outputs.graphql_changed == 'true'
     runs-on: ubuntu-latest
     steps:
@@ -109,7 +109,7 @@ jobs:
             graphql-schema-linter "$file"
           done
   specmatic-examples-validation-openAPI:
-    needs: detect-changes
+    needs: setup-environment
     runs-on: ubuntu-latest
     if: >-
       needs.detect-changes.outputs.examples_changed == 'true' ||
@@ -123,7 +123,7 @@ jobs:
           examples validate \
            --contract-file /central-contract-repo/io/specmatic/examples/store/openapi/product_search_bff_v4.yaml
   specmatic-examples-validation-graphQL:
-    needs: detect-changes
+    needs: setup-environment
     runs-on: ubuntu-latest
     if: >-
       needs.detect-changes.outputs.examples_changed == 'true' ||
