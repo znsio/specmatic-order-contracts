@@ -50,7 +50,7 @@ jobs:
             **/*_examples/**/*.json
             **/*_examples/**/*.yaml
   setup-environment:
-  runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest 
     steps:
       - name: Create Environment File
         run: |
