@@ -49,6 +49,20 @@ jobs:
           files: |
             **/*_examples/**/*.json
             **/*_examples/**/*.yaml
+  setup-environment: 
+    steps:
+      - name: Create Environment File
+        run: |
+          echo "GITHUB_SHA=${{ github.sha }}" >> env.list
+          echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
+          echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
+          echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
+          echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
+          if [ -z "${{ github.base_ref }}" ]; then
+              echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
+          else
+            echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
+          fi  
   linting-openAPI:
     needs: detect-changes
     if: 'needs.detect-changes.outputs.openapi_changed == ''true'' '
@@ -131,18 +145,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Create Environment File
-        run: |
-          echo "GITHUB_SHA=${{ github.sha }}" >> env.list
-          echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
-          echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
-          echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
-          echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
-          if [ -z "${{ github.base_ref }}" ]; then
-              echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
-          else
-            echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
-          fi
       - name: Specmatic OpenAPI Backward Compatibility Check
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
@@ -158,18 +160,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Create Environment File
-        run: |
-          echo "GITHUB_SHA=${{ github.sha }}" >> env.list
-          echo "GITHUB_REPOSITORY=${{ github.repository }}" >> env.list
-          echo "GITHUB_ACTOR=${{ github.actor }}" >> env.list
-          echo "GITHUB_WORKFLOW=${{ github.workflow }}" >> env.list
-          echo "GITHUB_HEAD_REF=${{ github.head_ref }}" >> env.list
-          if [ -z "${{ github.base_ref }}" ]; then
-              echo "GITHUB_BASE_REF=${{ github.ref }}" | sed 's/refs\/heads\///' >> env.list
-          else
-            echo "GITHUB_BASE_REF=${{ github.base_ref }}" >> env.list
-          fi
       - name: Specmatic GraphQL Backward Compatibility Check
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
