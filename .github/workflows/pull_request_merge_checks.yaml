@@ -59,12 +59,12 @@ jobs:
       - name: Create Environment File
         run: echo "Environment variables are set"
         env:
-        GITHUB_SHA: ${{ github.sha }}
-        GITHUB_REPOSITORY: ${{ github.repository }}
-        GITHUB_ACTOR: ${{ github.actor }}
-        GITHUB_WORKFLOW: ${{ github.workflow }}
-        GITHUB_HEAD_REF: ${{ github.head_ref }}
-        GITHUB_BASE_REF: ${{ github.base_ref || github.ref }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_WORKFLOW: ${{ github.workflow }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
+          GITHUB_BASE_REF: ${{ github.base_ref || github.ref }}
   linting-openAPI:
     needs: detect-changes
     if: 'needs.detect-changes.outputs.openapi_changed == ''true'' '
