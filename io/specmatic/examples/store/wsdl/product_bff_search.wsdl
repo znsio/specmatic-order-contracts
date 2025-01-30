@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:tns="http://www.example.com/orders"
+             targetNamespace="http://www.example.com/orders">
+    
+      <types>
+        <xsd:schema targetNamespace="http://www.example.com/orders">
+            <!-- OrderRequest and OrderResponse -->
+            <xsd:element name="OrderRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="productid" type="xsd:int"/>
+                        <xsd:element name="count" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="OrderResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- Product -->
+            <xsd:complexType name="Product">
+                <xsd:sequence>
+                    <xsd:element name="name" type="xsd:string"/>
+                    <xsd:element name="type" type="xsd:string"/>
+                    <xsd:element name="inventory" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <!-- Id -->
+            <xsd:element name="Id">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- ArrayList Wrapper -->
+            <xsd:element name="ArrayList">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="products" maxOccurs="unbounded" minOccurs="0">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="product" type="tns:Product"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+  <message name="CreateProductRequest">
+        <part name="newProduct" element="tns:Product"/>
+    </message>
+    <message name="CreateProductResponse">
+        <part name="id" element="tns:Id"/>
+    </message>
+
+  <message name="OrderRequest">
+        <part name="orderRequest" element="tns:OrderRequest"/>
+    </message>
+    <message name="OrderResponse">
+        <part name="orderResponse" element="tns:OrderResponse"/>
+    </message>
+
+    <message name="FindAvailableProductsRequest">
+        <part name="type" type="xsd:string"/>
+        <part name="pageSize" type="xsd:int"/>
+    </message>
+
+    <message name="FindAvailableProductsResponse">
+        <part name="arrayList" element="tns:ArrayList"/>
+    </message>
+
+
+   <portType name="OrderServicePortType">
+        <operation name="createOrder">
+            <input message="tns:OrderRequest"/>
+            <output message="tns:OrderResponse"/>
+        </operation>
+    </portType>
+    <portType name="ProductServicePortType">
+        <operation name="createProduct">
+            <input message="tns:CreateProductRequest"/>
+            <output message="tns:CreateProductResponse"/>
+        </operation>
+        <operation name="findAvailableProducts">
+            <input message="tns:FindAvailableProductsRequest"/>
+            <output message="tns:FindAvailableProductsResponse"/>
+        </operation>
+    </portType>
+    <binding name="OrderServiceBinding" type="tns:OrderServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="createOrder">
+            <soap:operation soapAction="http://www.example.com/orders/createOrder"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <binding name="ProductServiceBinding" type="tns:ProductServicePortType">
+        <operation name="createProduct">
+            <soap:operation soapAction="http://www.example.com/products/createProduct"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="findAvailableProducts">
+            <soap:operation soapAction="http://www.example.com/products/findAvailableProducts"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <!-- Service Definitions -->
+    <service name="OrderService">
+        <port name="OrderServicePort" binding="tns:OrderServiceBinding">
+            <soap:address location="http://localhost:8080/orders"/>
+        </port>
+         <port name="ProductServicePort" binding="tns:ProductServiceBinding">
+            <soap:address location="http://localhost:8080/products"/>
+        </port>
+    </service>
+
+</definitions>
