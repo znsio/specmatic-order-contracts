@@ -70,7 +70,7 @@ components:
           - totalAmount
           - status
         properties:
-          orderRequestId:
+          id:
             type: integer
           totalAmount:
             type: number
@@ -84,6 +84,7 @@ components:
       examples:
         - name: NEW_ORDER
           payload:
+            id: 12345
             totalAmount: 3000.00
             status: "PROCESSED"
     Notification:
