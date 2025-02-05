@@ -74,6 +74,7 @@ jobs:
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
             --env-file env.list \
+            --user $(id -u):$(id -g) \
             --entrypoint /bin/sh znsio/specmatic \
             -c "cd /central-contract-repo && java -jar /usr/src/app/specmatic.jar backward-compatibility-check --base-branch origin/main"
 
@@ -82,6 +83,7 @@ jobs:
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
             --env-file env.list \
+            --user $(id -u):$(id -g) \
             --entrypoint /bin/sh \
             znsio/specmatic-graphql-trial \
             -c "cd /central-contract-repo && java -jar /usr/src/app/specmatic-graphql.jar backward-compatibility-check --base-branch origin/main"
