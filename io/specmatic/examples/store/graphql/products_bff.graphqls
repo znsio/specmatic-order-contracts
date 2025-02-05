@@ -3,7 +3,7 @@ schema {
   mutation: Mutation 
 } 
 
-enum ProductType {
+enum ProductType { 
   gadget
   book
   food
