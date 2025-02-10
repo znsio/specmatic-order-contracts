@@ -1,0 +1,24 @@
+{
+  "name": "PLACE_MACBOOK_ORDER",
+  "publish": {
+    "topic": "place-order",
+    "payload": {
+      "id": 1,
+      "orderItems": [
+        {
+          "id": 1,
+          "name": "Macbook",
+          "quantity": 50,
+          "price": 6000.00
+        }
+      ]
+    }
+  },
+  "subscribe": {
+    "topic": "process-order",
+    "payload": {
+      "totalAmount": 300000.00,
+      "status": "PROCESSED"
+    }
+  }
+}

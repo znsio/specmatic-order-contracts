@@ -1,0 +1,25 @@
+{
+  "name": "PLACE_IPHONE_ORDER",
+  "publish": {
+    "topic": "place-order",
+    "payload": {
+      "id": 1,
+      "orderItems": [
+        {
+          "id": 1,
+          "name": "iPhone",
+          "quantity": 10,
+          "price": 5000.00
+        }
+      ]
+    }
+  },
+  "subscribe": {
+    "topic": "process-order",
+    "payload": {
+      "totalAmount": 50000.00,
+      "status": "PROCESSED"
+    }
+  }
+}
+
