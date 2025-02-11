@@ -1,0 +1,31 @@
+{
+  "http-request": {
+    "method": "GET",
+    "path": "/products?type=(PRODUCT_TYPE:ProductType)"
+  },
+  "http-response": {
+    "status": 200,
+    "body": [
+      {
+        "id": "$(data.type[PRODUCT_TYPE].productId)",
+        "name": "$(data.type[PRODUCT_TYPE].name)",
+        "inventory": "(number)",
+        "type": "$(PRODUCT_TYPE)"
+      }
+    ],
+    "status-text": "OK"
+  },
+  "data": {
+    "type": {
+      "gadget": {
+        "name": "iPhone",
+        "productId": 10
+      },
+      "book": {
+        "name": "Harry Potter",
+        "productId": 20
+      }
+    }
+  }
+}
+
