@@ -75,8 +75,7 @@ jobs:
           docker run -v "$(pwd):/repo:rw" \
             --env-file env.list \
             --user $(id -u):$(id -g) \
-            znsio/specmatic \
-            -c "backward-compatibility-check --repo-dir=/repo --base-branch=origin/main"
+            znsio/specmatic backward-compatibility-check --repo-dir=/repo --base-branch=origin/main
 
       - name: Run GraphQL backward compatibility check on changed files
         if: steps.changed-graphqls-files.outputs.any_changed == 'true'
