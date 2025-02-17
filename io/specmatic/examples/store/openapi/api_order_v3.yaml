@@ -1,12 +1,12 @@
-openapi: 3.0.1
+openapi: 3.0.1 
 info:
   title: Order API
   version: "2.0"
 servers:
   - url: "http://localhost:3000"
-paths:
-  "/products/{id}":
-    parameters:
+paths: 
+  "/products/{id}": 
+    parameters: 
       - name: id
         schema:
           type: number

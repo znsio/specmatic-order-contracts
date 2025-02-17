@@ -72,16 +72,17 @@ jobs:
       - name: Run OpenAPI backward compatibility check on changed files
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
-          docker run -v "$(pwd):/central-contract-repo:rw" \
+          docker run -v "$(pwd):/repo:rw" \
             --env-file env.list \
-            --entrypoint /bin/sh znsio/specmatic \
-            -c "git config --global --add safe.directory /central-contract-repo && cd /central-contract-repo && java -jar /usr/src/app/specmatic.jar backward-compatibility-check --base-branch origin/main"
+            --user $(id -u):$(id -g) \
+            znsio/specmatic backward-compatibility-check --repo-dir=/repo --base-branch=origin/main
 
       - name: Run GraphQL backward compatibility check on changed files
         if: steps.changed-graphqls-files.outputs.any_changed == 'true'
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
             --env-file env.list \
+            --user $(id -u):$(id -g) \
             --entrypoint /bin/sh \
             znsio/specmatic-graphql-trial \
-            -c "git config --global --add safe.directory /central-contract-repo && cd /central-contract-repo && java -jar /usr/src/app/specmatic-graphql.jar backward-compatibility-check --base-branch origin/main"
+            -c "cd /central-contract-repo && java -jar /usr/src/app/specmatic-graphql.jar backward-compatibility-check --base-branch origin/main"

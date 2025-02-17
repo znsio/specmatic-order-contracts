@@ -1,9 +1,9 @@
 schema {
   query: Query
-  mutation: Mutation
-}
+  mutation: Mutation 
+} 
 
-enum ProductType {
+enum ProductType {  
   gadget
   book
   food
