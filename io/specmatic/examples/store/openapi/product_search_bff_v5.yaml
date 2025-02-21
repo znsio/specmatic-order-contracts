@@ -1,0 +1,126 @@
+openapi: 3.0.0
+info:
+  title: BFF Sample API
+  version: '1.0'
+  description: A sample API for a BFF
+  contact:
+    url: https://specmatic.io
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: WIP
+    description: API still under development
+  - name: Orders
+  - name: Products
+paths:
+  /products:
+    summary: Create a new product
+    post:
+      description: Create a new product
+      operationId: createProduct
+      tags:
+        - Products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "common_v2.yaml#/components/schemas/ProductDetails"
+      responses:
+        '201':
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: "common_v2.yaml#/components/schemas/Product"
+        '400':
+          $ref: "common_v2.yaml#/components/responses/BadRequest"
+        '503':
+          description: Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "common_v2.yaml#/components/schemas/ErrorResponseBody"
+
+  /findAvailableProducts:
+    parameters:
+      - schema:
+          type: string
+        name: type
+        in: query
+        required: false
+      - name: pageSize
+        in: header
+        schema:
+          type: integer
+        required: true
+    get:
+      description: Find available products
+      operationId: findAvailableProducts
+      tags:
+        - Products
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "common_v2.yaml#/components/schemas/Product"
+        '400':
+          $ref: "common_v2.yaml#/components/responses/BadRequest"
+        '503':
+          description: Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "common_v2.yaml#/components/schemas/ErrorResponseBody"
+
+  /orders:
+    post:
+      description: Create a new order
+      operationId: createOrder
+      tags:
+        - Orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "common_v2.yaml#/components/schemas/OrderDetails"
+      responses:
+        '201':
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: "common_v2.yaml#/components/schemas/Order"
+        '400':
+          $ref: "common_v2.yaml#/components/responses/BadRequest"
+        '503':
+          description: Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "common_v2.yaml#/components/schemas/ErrorResponseBody"
+    get:
+      description: Get all orders
+      operationId: getOrders
+      tags:
+        - Orders
+        - WIP
+      parameters:
+        - in: query
+          name: orderId
+          schema:
+            type: integer
+          required: false
+          description: ID of the order to retrieve. If not provided, returns all orders.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "common_v2.yaml#/components/schemas/Order"

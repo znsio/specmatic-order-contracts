@@ -1,0 +1,277 @@
+openapi: 3.0.1
+info:
+  title: Order API
+  version: "3.0"
+  contact:
+    url: "https://specmatic.io"
+  description: "Simple order API Specification"
+servers:
+  - url: "http://localhost:3000"
+tags:
+  - name: Orders
+  - name: Products
+paths:
+  /products:
+    get:
+      description: Get all products
+      operationId: getProducts
+      tags:
+        - Products
+      parameters:
+        - name: type
+          in: query
+          schema:
+            $ref: "common_v2.yaml#/components/schemas/ProductType"
+      responses:
+        "200":
+          description: List of products in the response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "common_v2.yaml#/components/schemas/Product"
+    post:
+      description: Create a new product
+      operationId: postProducts
+      tags:
+        - Products
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "common_v2.yaml#/components/schemas/ProductDetails"
+      responses:
+        "201":
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: "common_v2.yaml#/components/schemas/Product"
+        "400":
+          $ref: "common_v2.yaml#/components/responses/BadRequest"
+
+  "/products/{id}":
+    parameters:
+      - name: id
+        schema:
+          type: number
+        in: path
+        required: true
+    get:
+      description: Get product details
+      tags:
+        - Products
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "common_v2.yaml#/components/schemas/Product"
+        "400":
+          $ref: "common_v2.yaml#/components/responses/BadRequest"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "common_v2.yaml#/components/schemas/ErrorResponseBody"
+      operationId: get-product-id
+    patch:
+      description: Update a product
+      operationId: patchProduct
+      tags:
+        - Products
+      security:
+        - ApiKeyAuth: []
+      responses:
+        "200":
+          description: Update successful
+          content:
+            application/json:
+              schema:
+                $ref: "common_v2.yaml#/components/schemas/Product"
+        "400":
+          $ref: "common_v2.yaml#/components/responses/BadRequest"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "common_v2.yaml#/components/schemas/Product"
+    delete:
+      description: Delete a product
+      operationId: deleteProduct
+      tags:
+        - Products
+      security:
+        - ApiKeyAuth: []
+      responses:
+        "204":
+          description: Deletion successful
+        "400":
+          $ref: "common_v2.yaml#/components/responses/BadRequest"
+
+  "/products/{id}/image":
+    put:
+      description: Update or upload a product image
+      operationId: updateProductImage
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the product to update the image for
+      requestBody:
+        description: Image file to be associated with the product
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - image
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: The image file to upload
+            encoding:
+              image:
+                contentType: image/png, image/jpeg
+      responses:
+        "200":
+          description: Product image updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  productId:
+                    type: integer
+        "400":
+          $ref: "common_v2.yaml#/components/responses/BadRequest"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "common_v2.yaml#/components/schemas/ErrorResponseBody"
+
+  /orders:
+    post:
+      description: Create a new order
+      operationId: postOrders
+      tags:
+        - Orders
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "common_v2.yaml#/components/schemas/OrderDetails"
+      responses:
+        "201":
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: "common_v2.yaml#/components/schemas/Order"
+        "400":
+          $ref: "common_v2.yaml#/components/responses/BadRequest"
+    get:
+      description: Get all orders
+      operationId: getOrders
+      tags:
+        - Orders
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "common_v2.yaml#/components/schemas/Order"
+      parameters:
+        - name: productId
+          in: query
+          schema:
+            type: number
+        - name: status
+          in: query
+          schema:
+            type: string
+
+  "/orders/{id}":
+    parameters:
+      - schema:
+          type: number
+        name: id
+        in: path
+        required: true
+    get:
+      description: Get order details
+      operationId: getOrdersId
+      tags:
+        - Orders
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "common_v2.yaml#/components/schemas/Order"
+        "400":
+          $ref: "common_v2.yaml#/components/responses/BadRequest"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "common_v2.yaml#/components/schemas/ErrorResponseBody"
+    patch:
+      description: Update an order
+      operationId: patchOrdersId
+      tags:
+        - Orders
+      security:
+        - ApiKeyAuth: []
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "common_v2.yaml#/components/schemas/Order"
+        "400":
+          $ref: "common_v2.yaml#/components/responses/BadRequest"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "common_v2.yaml#/components/schemas/Order"
+    delete:
+      description: Cancel an order
+      operationId: deleteOrdersId
+      tags:
+        - Orders
+      security:
+        - ApiKeyAuth: []
+      responses:
+        "204":
+          description: Cancel successful
+        "400":
+          $ref: "common_v2.yaml#/components/responses/BadRequest"
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      $ref: "common_v2.yaml#/components/securitySchemes/ApiKeyAuth"
