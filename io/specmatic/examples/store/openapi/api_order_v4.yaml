@@ -114,57 +114,6 @@ paths:
         "400":
           $ref: "common_v2.yaml#/components/responses/BadRequest"
 
-  "/products/{id}/image":
-    put:
-      description: Update or upload a product image
-      operationId: updateProductImage
-      tags:
-        - Products
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: ID of the product to update the image for
-      requestBody:
-        description: Image file to be associated with the product
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              required:
-                - image
-              properties:
-                image:
-                  type: string
-                  format: binary
-                  description: The image file to upload
-            encoding:
-              image:
-                contentType: image/png, image/jpeg
-      responses:
-        "200":
-          description: Product image updated successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                  productId:
-                    type: integer
-        "400":
-          $ref: "common_v2.yaml#/components/responses/BadRequest"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "common_v2.yaml#/components/schemas/ErrorResponseBody"
-
   /orders:
     post:
       description: Create a new order
