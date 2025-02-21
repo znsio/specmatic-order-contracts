@@ -1,0 +1,179 @@
+openapi: 3.0.1
+info:
+  version: "1.0"
+  title: UUID API
+  description: UUID Sample API
+  contact:
+    name: Specmatic
+servers:
+  - url: http://localhost:5000
+tags:
+  - name: UUID
+paths:
+  /uuid:
+    get:
+      tags:
+        - UUID
+      summary: Get all UUIDs
+      operationId: GetUuids
+      description: Get all UUIDs for a given UUID type
+      parameters:
+        - $ref: '#/components/parameters/UuidTypeQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UuidResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+    post:
+      tags:
+        - UUID
+      summary: Create a UUID
+      operationId: CreateUuid
+      description: Create a new UUID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UuidRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+  /uuids/{uuid_type}/{uuid}:
+    get:
+      tags:
+        - UUID
+      summary: Get a UUID
+      operationId: GetUuid
+      description: Get a UUID
+      parameters:
+        - $ref: '#/components/parameters/UuidTypePath'
+        - $ref: '#/components/parameters/UuidPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidResponse'
+        '404':
+          description: Not Found
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+    patch:
+      tags:
+        - UUID
+      summary: Update a UUID
+      operationId: UpdateUuid
+      description: Update a UUID
+      parameters:
+        - $ref: '#/components/parameters/UuidTypePath'
+        - $ref: '#/components/parameters/UuidPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidResponse'
+        '404':
+          description: Not Found
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+components:
+  responses:
+    BadRequestResponse:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    UuidTypeQuery:
+      name: uuid_type
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/UuidType'
+    UuidTypePath:
+      name: uuid_type
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/UuidType'
+    UuidPath:
+      name: uuid
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Uuid'
+  schemas:
+    Customer:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+      required:
+        - firstName
+        - lastName
+    UuidRequest:
+      allOf:
+        - $ref: '#/components/schemas/Customer'
+        - type: object
+          properties:
+            uuidType:
+              $ref: '#/components/schemas/UuidType'
+          required:
+            - uuidType
+    Uuid:
+      type: string
+      format: uuid
+    UuidResponse:
+      allOf:
+        - $ref: '#/components/schemas/UuidRequest'
+        - type: object
+          properties:
+            uuid:
+              $ref: '#/components/schemas/Uuid'
+          required:
+            - uuid
+    UuidType:
+      type: string
+      enum:
+        - Regular
+        - Premium
+        - Enterprise
+    ErrorResponse:
+      required:
+        - error
+      properties:
+        timestamp:
+          type: string
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
