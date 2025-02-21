@@ -10,7 +10,7 @@ servers:
 tags:
   - name: UUID
 paths:
-  /uuid:
+  /uuids:
     get:
       tags:
         - UUID
