@@ -44,7 +44,7 @@ paths:
   /findAvailableProducts:
     parameters:
       - schema:
-          type: string
+          $ref: "common_v2.yaml#/components/schemas/ProductType"
         name: type
         in: query
         required: false
