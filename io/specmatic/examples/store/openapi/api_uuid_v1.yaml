@@ -51,7 +51,7 @@ paths:
                 $ref: '#/components/schemas/UuidResponse'
         '400':
           $ref: '#/components/responses/BadRequestResponse'
-  /uuids/{uuid_type}/{uuid}:
+  /uuids/{uuidType}/{uuid}:
     get:
       tags:
         - UUID
@@ -108,13 +108,13 @@ components:
             $ref: '#/components/schemas/ErrorResponse'
   parameters:
     UuidTypeQuery:
-      name: uuid_type
+      name: uuidType
       in: query
       required: false
       schema:
         $ref: '#/components/schemas/UuidType'
     UuidTypePath:
-      name: uuid_type
+      name: uuidType
       in: path
       required: true
       schema:
