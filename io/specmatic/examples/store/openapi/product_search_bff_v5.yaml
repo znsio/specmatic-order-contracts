@@ -124,3 +124,22 @@ paths:
                 type: array
                 items:
                   $ref: "common_v2.yaml#/components/schemas/Order"
+
+components:
+  securitySchemes:
+    userFirstName:
+      type: apiKey
+      in: header
+      name: FIRST-NAME
+    userLstName:
+      type: apiKey
+      in: header
+      name: LAST-NAME
+    userEmail:
+      type: apiKey
+      in: header
+      name: EMAIL
+security:
+  - userFirstName: []
+    userLstName: []
+    userEmail: []

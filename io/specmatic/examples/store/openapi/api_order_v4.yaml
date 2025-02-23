@@ -6,7 +6,7 @@ info:
     url: "https://specmatic.io"
   description: "Simple order API Specification"
 servers:
-  - url: "http://localhost:3000"
+  - url: "http://localhost:5000"
 tags:
   - name: Orders
   - name: Products
@@ -31,13 +31,13 @@ paths:
                 type: array
                 items:
                   $ref: "common_v2.yaml#/components/schemas/Product"
+        "400":
+          $ref: "common_v2.yaml#/components/responses/BadRequest"
     post:
       description: Create a new product
       operationId: postProducts
       tags:
         - Products
-      security:
-        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -79,14 +79,12 @@ paths:
             application/json:
               schema:
                 $ref: "common_v2.yaml#/components/schemas/ErrorResponseBody"
-      operationId: get-product-id
+      operationId: getProductById
     patch:
       description: Update a product
       operationId: patchProduct
       tags:
         - Products
-      security:
-        - ApiKeyAuth: []
       responses:
         "200":
           description: Update successful
@@ -106,8 +104,6 @@ paths:
       operationId: deleteProduct
       tags:
         - Products
-      security:
-        - ApiKeyAuth: []
       responses:
         "204":
           description: Deletion successful
@@ -120,8 +116,6 @@ paths:
       operationId: postOrders
       tags:
         - Orders
-      security:
-        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -150,6 +144,8 @@ paths:
                 type: array
                 items:
                   $ref: "common_v2.yaml#/components/schemas/Order"
+        "400":
+          $ref: "common_v2.yaml#/components/responses/BadRequest"
       parameters:
         - name: productId
           in: query
@@ -169,7 +165,7 @@ paths:
         required: true
     get:
       description: Get order details
-      operationId: getOrdersId
+      operationId: getOrderById
       tags:
         - Orders
       responses:
@@ -192,8 +188,6 @@ paths:
       operationId: patchOrdersId
       tags:
         - Orders
-      security:
-        - ApiKeyAuth: []
       responses:
         "200":
           description: Success
@@ -213,14 +207,17 @@ paths:
       operationId: deleteOrdersId
       tags:
         - Orders
-      security:
-        - ApiKeyAuth: []
       responses:
         "204":
           description: Cancel successful
         "400":
           $ref: "common_v2.yaml#/components/responses/BadRequest"
+
 components:
   securitySchemes:
-    ApiKeyAuth:
-      $ref: "common_v2.yaml#/components/securitySchemes/ApiKeyAuth"
+    UuidKeyAuth:
+      type: apiKey
+      in: header
+      name: USER-UUID
+security:
+  - UuidKeyAuth: []

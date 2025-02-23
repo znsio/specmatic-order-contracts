@@ -99,9 +99,3 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponseBody'
-
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authenticate

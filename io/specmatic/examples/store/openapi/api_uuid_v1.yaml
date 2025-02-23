@@ -6,7 +6,7 @@ info:
   contact:
     name: Specmatic
 servers:
-  - url: http://localhost:5000
+  - url: http://localhost:9000
 tags:
   - name: UUID
 paths:
@@ -138,6 +138,7 @@ components:
       required:
         - firstName
         - lastName
+        - email
     UuidRequest:
       allOf:
         - $ref: '#/components/schemas/Customer'
