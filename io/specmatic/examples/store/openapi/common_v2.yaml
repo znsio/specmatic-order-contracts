@@ -91,6 +91,21 @@ components:
           type: string
         message:
           type: string
+    
+    Customer:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+      required:
+        - firstName
+        - lastName
+        - email
 
   responses:
     BadRequest:

@@ -29,7 +29,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/UuidResponse'
         '400':
-          $ref: '#/components/responses/BadRequestResponse'
+          $ref: 'common_v2.yaml#/components/responses/BadRequest'
     post:
       tags:
         - UUID
@@ -50,7 +50,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/UuidResponse'
         '400':
-          $ref: '#/components/responses/BadRequestResponse'
+          $ref: 'common_v2.yaml#/components/responses/BadRequest'
   /uuids/{uuidType}/{uuid}:
     get:
       tags:
@@ -71,7 +71,7 @@ paths:
         '404':
           description: Not Found
         '400':
-          $ref: '#/components/responses/BadRequestResponse'
+          $ref: 'common_v2.yaml#/components/responses/BadRequest'
     patch:
       tags:
         - UUID
@@ -97,15 +97,8 @@ paths:
         '404':
           description: Not Found
         '400':
-          $ref: '#/components/responses/BadRequestResponse'
+          $ref: 'common_v2.yaml#/components/responses/BadRequest'
 components:
-  responses:
-    BadRequestResponse:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   parameters:
     UuidTypeQuery:
       name: uuidType
@@ -126,22 +119,9 @@ components:
       schema:
         $ref: '#/components/schemas/Uuid'
   schemas:
-    Customer:
-      type: object
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
-      required:
-        - firstName
-        - lastName
-        - email
     UuidRequest:
       allOf:
-        - $ref: '#/components/schemas/Customer'
+        - $ref: 'common_v2.yaml#/components/schemas/Customer'
         - type: object
           properties:
             uuidType:
@@ -166,15 +146,3 @@ components:
         - Regular
         - Premium
         - Enterprise
-    ErrorResponse:
-      required:
-        - error
-      properties:
-        timestamp:
-          type: string
-        status:
-          type: integer
-        error:
-          type: string
-        message:
-          type: string

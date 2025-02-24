@@ -12,6 +12,7 @@ tags:
     description: API still under development
   - name: Orders
   - name: Products
+
 paths:
   /products:
     summary: Create a new product
@@ -24,7 +25,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "common_v2.yaml#/components/schemas/ProductDetails"
+              $ref: "#/components/schemas/ProductDetailsRequest"
       responses:
         '201':
           description: Product created
@@ -32,41 +33,6 @@ paths:
             application/json:
               schema:
                 $ref: "common_v2.yaml#/components/schemas/Product"
-        '400':
-          $ref: "common_v2.yaml#/components/responses/BadRequest"
-        '503':
-          description: Timeout
-          content:
-            application/json:
-              schema:
-                $ref: "common_v2.yaml#/components/schemas/ErrorResponseBody"
-
-  /findAvailableProducts:
-    parameters:
-      - schema:
-          $ref: "common_v2.yaml#/components/schemas/ProductType"
-        name: type
-        in: query
-        required: false
-      - name: pageSize
-        in: header
-        schema:
-          type: integer
-        required: true
-    get:
-      description: Find available products
-      operationId: findAvailableProducts
-      tags:
-        - Products
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "common_v2.yaml#/components/schemas/Product"
         '400':
           $ref: "common_v2.yaml#/components/responses/BadRequest"
         '503':
@@ -86,7 +52,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "common_v2.yaml#/components/schemas/OrderDetails"
+              $ref: "#/components/schemas/OrderDetailsRequest"
       responses:
         '201':
           description: Order created
@@ -126,20 +92,19 @@ paths:
                   $ref: "common_v2.yaml#/components/schemas/Order"
 
 components:
-  securitySchemes:
-    userFirstName:
-      type: apiKey
-      in: header
-      name: FIRST-NAME
-    userLstName:
-      type: apiKey
-      in: header
-      name: LAST-NAME
-    userEmail:
-      type: apiKey
-      in: header
-      name: EMAIL
-security:
-  - userFirstName: []
-    userLstName: []
-    userEmail: []
+  schemas:
+    CustomerDetails:
+      type: object
+      properties:
+        customer:
+          $ref: "common_v2.yaml#/components/schemas/Customer"
+      required:
+        - customer
+    ProductDetailsRequest:
+      allOf:
+        - $ref: "common_v2.yaml#/components/schemas/ProductDetails"
+        - $ref: "#/components/schemas/CustomerDetails"
+    OrderDetailsRequest:
+      allOf:
+        - $ref: "common_v2.yaml#/components/schemas/OrderDetails"
+        - $ref: "#/components/schemas/CustomerDetails"

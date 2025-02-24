@@ -12,6 +12,8 @@ tags:
   - name: Products
 paths:
   /products:
+    parameters:
+      - $ref: "#/components/parameters/UserUuid"
     get:
       description: Get all products
       operationId: getProducts
@@ -60,6 +62,7 @@ paths:
           type: number
         in: path
         required: true
+      - $ref: "#/components/parameters/UserUuid"
     get:
       description: Get product details
       tags:
@@ -111,6 +114,8 @@ paths:
           $ref: "common_v2.yaml#/components/responses/BadRequest"
 
   /orders:
+    parameters:
+      - $ref: "#/components/parameters/UserUuid"
     post:
       description: Create a new order
       operationId: postOrders
@@ -163,6 +168,7 @@ paths:
         name: id
         in: path
         required: true
+      - $ref: "#/components/parameters/UserUuid"
     get:
       description: Get order details
       operationId: getOrderById
@@ -215,9 +221,17 @@ paths:
 
 components:
   securitySchemes:
-    UuidKeyAuth:
+    ApiKeyAuth:
       type: apiKey
       in: header
-      name: USER-UUID
+      name: Authenticate
+  parameters:
+    UserUuid:
+      name: UUID
+      in: header
+      required: true
+      schema:
+        type: string
+        format: uuid
 security:
-  - UuidKeyAuth: []
+  - ApiKeyAuth: []
