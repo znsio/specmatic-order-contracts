@@ -1,0 +1,410 @@
+openapi: 3.0.1
+info:
+  title: Order API
+  version: "2.0"
+servers:
+  - url: "http://localhost:3000"
+paths:
+  "/products/{id}":
+    parameters:
+      - name: id
+        schema:
+          type: number
+        in: path
+        required: true
+        examples:
+          GET_PRODUCT:
+            value: 10
+          UPDATE_PRODUCT:
+            value: 10
+          DELETE_PRODUCT:
+            value: 20
+          INVALID_ID:
+            value: "344"
+    get:
+      summary: Fetch product details
+      tags: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "./common.yaml#/components/schemas/Product"
+              examples:
+                GET_PRODUCT:
+                  value:
+                    name: "XYZ Phone"
+                    type: "gadget"
+                    inventory: 10
+                    id: 10
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseBody"
+              examples:
+                INVALID_ID:
+                  value:
+                    timestamp: "2023-03-17T12:06:56.177+00:00"
+                    status: 404
+                    error: "Not Found"
+                    message: "Not found"
+      operationId: get-product-id
+    post:
+      summary: Update product details
+      operationId: post-products-id
+      security:
+        - ApiKeyAuth: []
+      responses:
+        "200":
+          description: Update successful
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                UPDATE_PRODUCT:
+                  value: "success"
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "./common.yaml#/components/schemas/Product"
+            examples:
+              UPDATE_PRODUCT:
+                value:
+                  name: "XYZ Fone"
+                  type: "gadget"
+                  inventory: 10
+                  id: 10
+    delete:
+      summary: Delete a product
+      operationId: delete-products-id
+      security:
+        - ApiKeyAuth: []
+      responses:
+        "200":
+          description: Deletion successful
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                DELETE_PRODUCT:
+                  value: "success"
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
+  "/products/{id}/image":
+    put:
+      summary: Update or upload a product image
+      operationId: updateProductImage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the product to update the image for
+      requestBody:
+        description: Image file to be associated with the product
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - image
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: The image file to upload
+            encoding:
+              image:
+                contentType: image/png, image/jpeg
+            examples:
+              UPDATE_PRODUCT_IMAGE:
+                value:
+                  image:
+                    externalValue: ".specmatic/repos/specmatic-order-contracts/io/specmatic/examples/store/openapi/box_image.jpg"
+      responses:
+        "200":
+          description: Product image updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  productId:
+                    type: integer
+              examples:
+                UPDATE_PRODUCT_IMAGE:
+                  value:
+                    message: "Product image updated successfully"
+                    productId: 10
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseBody"
+  /products:
+    get:
+      summary: GET Products based on type
+      parameters:
+        - name: type
+          in: query
+          schema:
+            $ref: "./common.yaml#/components/schemas/ProductType"
+      responses:
+        "200":
+          description: List of products in the response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "common.yaml#/components/schemas/Product"
+    post:
+      summary: POST /products
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "common.yaml#/components/schemas/ProductDetails"
+      responses:
+        "200":
+          description: POST /products
+          content:
+            application/json:
+              schema:
+                $ref: "common.yaml#/components/schemas/ProductId"
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
+  /orders:
+    post:
+      summary: POST /orders
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "common.yaml#/components/schemas/OrderDetails"
+            examples:
+              CREATE_ORDER:
+                value:
+                  productid: 10
+                  count: 2
+                  status: pending
+      responses:
+        "200":
+          description: POST /orders
+          content:
+            application/json:
+              schema:
+                $ref: "common.yaml#/components/schemas/OrderId"
+              examples:
+                CREATE_ORDER:
+                  value:
+                    id: 10
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
+    get:
+      summary: Search for orders
+      operationId: get-orders
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "./common.yaml#/components/schemas/Order"
+              examples:
+                200_OK:
+                  value:
+                    - productid: 10
+                      count: 2
+                      status: "pending"
+                      id: 10
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
+      parameters:
+        - name: productid
+          in: query
+          schema:
+            type: number
+          examples:
+            200_OK:
+              value: 10
+        - name: status
+          in: query
+          schema:
+            type: string
+          examples:
+            200_OK:
+              value: fulfilled
+      description: ""
+  "/orders/{id}":
+    parameters:
+      - schema:
+          type: number
+        name: id
+        in: path
+        required: true
+        examples:
+          GET_ORDER:
+            value: 10
+          UPDATE_ORDER:
+            value: 10
+          DELETE_ORDER:
+            value: 20
+          INVALID_ID:
+            value: 433
+    get:
+      summary: Fetch order details
+      tags: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "./common.yaml#/components/schemas/Order"
+              examples:
+                GET_ORDER:
+                  value:
+                    productid: 10
+                    count: 2
+                    status: "pending"
+                    id: 10
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseBody"
+              examples:
+                INVALID_ID:
+                  value:
+                    timestamp: "2023-03-17T12:06:56.177+00:00"
+                    status: 404
+                    error: "Not Found"
+                    message: "Product with id 344 was not found"
+      operationId: get-orders-id
+      parameters: []
+    post:
+      summary: Update order details
+      operationId: post-orders-id
+      security:
+        - ApiKeyAuth: []
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                UPDATE_ORDER:
+                  value: "success"
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "./common.yaml#/components/schemas/Order"
+            examples:
+              UPDATE_ORDER:
+                value:
+                  productid: 10
+                  id: 10
+                  count: 1
+                  status: pending
+    delete:
+      summary: Cancel an order
+      operationId: delete-orders-id
+      security:
+        - ApiKeyAuth: []
+      responses:
+        "200":
+          description: Cancel successful
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                DELETE_ORDER:
+                  value: "success"
+        "400":
+          $ref: "./common_responses.yaml#/components/responses/BadRequest"
+components:
+  schemas:
+    Products_RequestBody:
+      required:
+        - inventory
+        - name
+        - type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - gadget
+            - book
+            - food
+            - other
+        inventory:
+          type: number
+    Orders_RequestBody:
+      required:
+        - count
+        - productid
+        - status
+      properties:
+        productid:
+          type: number
+        count:
+          type: number
+        status:
+          type: string
+          enum:
+            - pending
+            - fulfilled
+            - cancelled
+    ErrorResponseBody:
+      properties:
+        id:
+          type: number
+        timestamp:
+          type: string
+        status:
+          type: number
+        error:
+          type: string
+        message:
+          type: string
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authenticate
