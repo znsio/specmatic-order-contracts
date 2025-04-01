@@ -52,7 +52,7 @@ jobs:
         run: |
           docker run -v "$(pwd):/central-contract-repo:rw" \
             --entrypoint /bin/sh \
-            znsio/specmatic-graphql-trial \
+            znsio/specmatic-graphql \
             -c "cd /central-contract-repo && java -jar /usr/src/app/specmatic-graphql.jar examples validate --spec-file io/specmatic/examples/store/graphql/products_bff.graphqls"
       
       - name: Create environment file
@@ -84,5 +84,5 @@ jobs:
             --env-file env.list \
             --user $(id -u):$(id -g) \
             --entrypoint /bin/sh \
-            znsio/specmatic-graphql-trial \
+            znsio/specmatic-graphql \
             -c "cd /central-contract-repo && java -jar /usr/src/app/specmatic-graphql.jar backward-compatibility-check --base-branch origin/main"
