@@ -67,7 +67,7 @@ jobs:
         run: |
           docker run -v "$(pwd):/repo:rw" \
             --env-file env.list \
-            znsio/specmatic examples validated --specs-dir=/repo/io/specmatic/examples/store/openapi
+            znsio/specmatic examples validate --specs-dir=/repo/io/specmatic/examples/store/openapi
 
       - name: Run OpenAPI backward compatibility check on changed files
         if: steps.changed-files-specific.outputs.any_changed == 'true'
