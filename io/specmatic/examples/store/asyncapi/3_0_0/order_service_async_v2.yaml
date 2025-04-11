@@ -55,8 +55,11 @@ components:
       payload:
         type: object
         required:
+          - id
           - orderItems
         properties:
+          id:
+            type: integer
           orderItems:
             type: array
             items:
@@ -78,6 +81,7 @@ components:
       examples:
         - name: NEW_ORDER
           payload:
+            id: 10
             orderItems:
               - id: 1
                 name: Macbook
@@ -150,6 +154,6 @@ components:
       examples:
         - name: CANCEL_ORDER
           payload:
-            reference: 345
+            reference: 10
             status: COMPLETED
 
