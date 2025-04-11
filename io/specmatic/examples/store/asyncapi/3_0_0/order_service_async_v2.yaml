@@ -2,6 +2,27 @@ asyncapi: 3.0.0
 info:
   title: Order API
   version: 1.0.0
+servers:
+  development_kafka:
+    host: localhost:1234
+    protocol: kafka
+    security:
+      - type: userPassword
+        description: SASL/PLAIN security
+        x-sasl:
+          username: admin
+          password: admin-secret
+  development_pub_sub:
+    host: localhost:1234
+    protocol: googlepubsub
+    security:
+      - type: oauth2
+        description: Google Pub Sub security
+        flows:
+          clientCredentials:
+            tokenUrl: https://oauth2.googleapis.com/token
+        x-pubsub:
+          credentialsPath: '~/.config/gcloud/application_default_credentials.json'
 channels:
   place-order:
     address: place-order
