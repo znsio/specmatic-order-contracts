@@ -24,22 +24,22 @@ servers:
         x-pubsub:
           credentialsPath: '~/.config/gcloud/application_default_credentials.json'
 channels:
-  place-order:
+  NewOrderPlaced:
     address: place-order
     messages:
       placeOrder.message:
         $ref: '#/components/messages/OrderRequest'
-  process-order:
+  NewOrderProcessed:
     address: process-order
     messages:
       processOrder.message:
         $ref: '#/components/messages/Order'
-  cancel-order:
+  OrderCancellationRequested:
     address: cancel-order
     messages:
       cancelOrder.message:
         $ref: '#/components/messages/CancelOrderRequest'
-  process-cancellation:
+  OrderCancellationProcessed:
     address: process-cancellation
     messages:
       processCancellation.message:
@@ -48,25 +48,25 @@ operations:
   placeOrder:
     action: receive
     channel:
-      $ref: '#/channels/place-order'
+      $ref: '#/channels/NewOrderPlaced'
     messages:
-      - $ref: '#/channels/place-order/messages/placeOrder.message'
+      - $ref: '#/channels/NewOrderPlaced/messages/placeOrder.message'
     reply:
       channel:
-        $ref: '#/channels/process-order'
+        $ref: '#/channels/NewOrderProcessed'
       messages:
-        - $ref: '#/channels/process-order/messages/processOrder.message'
+        - $ref: '#/channels/NewOrderProcessed/messages/processOrder.message'
   cancelOrder:
     action: receive
     channel:
-      $ref: '#/channels/cancel-order'
+      $ref: '#/channels/OrderCancellationRequested'
     messages:
-      - $ref: '#/channels/cancel-order/messages/cancelOrder.message'
+      - $ref: '#/channels/OrderCancellationRequested/messages/cancelOrder.message'
     reply:
       channel:
-        $ref: '#/channels/process-cancellation'
+        $ref: '#/channels/OrderCancellationProcessed'
       messages:
-        - $ref: '#/channels/process-cancellation/messages/processCancellation.message'
+        - $ref: '#/channels/OrderCancellationProcessed/messages/processCancellation.message'
 components:
   messages:
     OrderRequest:
@@ -177,4 +177,3 @@ components:
           payload:
             reference: 10
             status: COMPLETED
-
