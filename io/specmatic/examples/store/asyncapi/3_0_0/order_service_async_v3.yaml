@@ -17,10 +17,16 @@ servers:
     protocol: googlepubsub
     security:
       - type: oauth2
-        description: Google Pub Sub security
+        description: Google Pub/Sub security using OAuth 2.0 client credentials flow.
         flows:
           clientCredentials:
             tokenUrl: https://oauth2.googleapis.com/token
+            availableScopes:
+              pubsub.read: Read access to Pub/Sub topics
+              pubsub.write: Write access to Pub/Sub topics
+        scopes:
+          - pubsub.read
+          - pubsub.write
         x-pubsub:
           credentialsPath: '~/.config/gcloud/application_default_credentials.json'
 channels:
