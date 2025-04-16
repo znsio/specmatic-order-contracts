@@ -1,0 +1,10 @@
+{
+  "fullMethodName": "com.store.order.bff.OrderService/createOrder",
+  "request": {
+    "productId": 10,
+    "count": 8
+  },
+  "response": {
+    "id": 21
+  }
+}
