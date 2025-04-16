@@ -1,0 +1,11 @@
+{
+  "fullMethodName": "com.store.OrderService/AddOrder",
+  "request": {
+    "productId": 10,
+    "count": 8,
+    "status": "PENDING"
+  },
+  "response": {
+    "id": 21
+  }
+}
