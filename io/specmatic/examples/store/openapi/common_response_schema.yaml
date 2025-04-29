@@ -1,8 +1,6 @@
 components:
   schemas:
     BadRequestErrorResponseBody:
-      required:
-        - error
       properties:
         timestamp:
           type: string
