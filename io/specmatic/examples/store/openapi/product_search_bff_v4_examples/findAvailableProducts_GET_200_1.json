@@ -1,0 +1,30 @@
+{
+    "http-request": {
+        "path": "/findAvailableProducts",
+        "method": "GET",
+        "query": {
+            "type": "YKIFE"
+        },
+        "headers": {
+            "pageSize": "205"
+        },
+        "description": "This is an example of a request to retrieve a list of entities at the /findAvailableProducts endpoint"
+    },
+    "http-response": {
+        "status": 200,
+        "body": [
+            {
+                "name": "KQODG",
+                "id": 508,
+                "type": "BYKMU",
+                "inventory": 608,
+                "description": "ODKJQ"
+            }
+        ],
+        "status-text": "OK",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response "
+    }
+}
