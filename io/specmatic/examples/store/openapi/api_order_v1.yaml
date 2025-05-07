@@ -331,11 +331,11 @@ paths:
                 items:
                   $ref: './common.yaml#/components/schemas/Order'
               examples:
-                200_OK:
+                INVALID_INLINE:
                   value:
-                    - productid: 10
-                      count: 2
-                      status: 'pending'
+                    - productid: "SHOULD-BE-A-NUMBER"
+                      count: "2"
+                      status: "UNKNOWN-STATUS"
                       id: 10
         '400':
           description: 'Bad Request'
@@ -360,14 +360,14 @@ paths:
           in: query
           name: productid
           examples:
-            200_OK:
+            INVALID_INLINE:
               value: 10
         - schema:
             type: string
           in: query
           name: status
           examples:
-            200_OK:
+            INVALID_INLINE:
               value: fulfilled
       description: ''
   '/orders/{id}':

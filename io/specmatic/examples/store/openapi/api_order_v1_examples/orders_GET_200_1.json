@@ -1,27 +1,21 @@
 {
     "http-request": {
         "path": "/orders",
-        "method": "GET",
-        "query": {
-            "productid": "496.0",
-            "status": "fulfilled"
-        },
-        "description": "This is an example of a request to retrieve a list of entities at the /orders endpoint"
+        "method": "GET"
     },
     "http-response": {
         "status": 200,
         "body": [
             {
-                "id": 569,
-                "productid": 414,
-                "count": 253,
-                "status": "fulfilled"
+                "id": 10,
+                "productid": "SHOULD-BE-A-NUMBER",
+                "count": "2",
+                "status": "UNKNOWN-STATUS"
             }
         ],
         "status-text": "OK",
         "headers": {
             "Content-Type": "application/json"
-        },
-        "description": "This is an example of a response "
+        }
     }
 }
