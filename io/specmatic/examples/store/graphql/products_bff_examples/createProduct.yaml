@@ -14,3 +14,5 @@ response: {
   "inventory": 10,
   "type": "book"
 }
+
+delay-in-milliseconds: 5000
