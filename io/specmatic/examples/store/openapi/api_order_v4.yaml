@@ -295,8 +295,8 @@ paths:
               examples:
                 BULK_CREATE_ORDERS:
                   value:
-                    - id: 101
-                    - id: 102
+                    - id: 10
+                    - id: 11
         "400":
           $ref: "./common_responses.yaml#/components/responses/BadRequest"
       
