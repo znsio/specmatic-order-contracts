@@ -1,23 +1,30 @@
-asyncapi: 2.6.0
+asyncapi: 3.0.0
 info:
   title: Product audits API
-  version: '1.0.0'
+  version: 1.0.0
 servers:
   kafka-dev:
-    url: tcp://localhost:61616
+    host: 'localhost:61616'
     protocol: kafka
 channels:
   product-queries:
-    publish:
-      operationId: publishObjectMessage
-      message:
+    address: product-queries
+    messages:
+      publishObjectMessage.message:
         bindings:
           kafka:
             key:
               type: string
-            bindingVersion: '0.4.0'
+            bindingVersion: 0.4.0
         payload:
-          $ref: "#/components/messages/product"
+          $ref: '#/components/messages/product'
+operations:
+  publishObjectMessage:
+    action: receive
+    channel:
+      $ref: '#/channels/product-queries'
+    messages:
+      - $ref: '#/channels/product-queries/messages/publishObjectMessage.message'
 components:
   messages:
     product:
@@ -41,14 +48,14 @@ components:
             description: A list of product categories
             type: array
             items:
-              $ref: "#/components/schemas/category"
+              $ref: '#/components/schemas/category'
   schemas:
     category:
       type: object
       properties:
         id:
-           description: The id of the category
-           type: integer
+          description: The id of the category
+          type: integer
         name:
           description: The name of the category
           type: string
