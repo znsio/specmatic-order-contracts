@@ -11,13 +11,7 @@ channels:
     address: product-queries
     messages:
       publishObjectMessage.message:
-        bindings:
-          kafka:
-            key:
-              type: string
-            bindingVersion: 0.4.0
-        payload:
-          $ref: '#/components/messages/product'
+        $ref: '#/components/messages/product'
 operations:
   publishObjectMessage:
     action: receive
