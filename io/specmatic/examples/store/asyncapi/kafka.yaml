@@ -2,10 +2,10 @@ asyncapi: 3.0.0
 info:
   title: Product audits API
   version: 1.0.0
-servers:
-  kafka-dev:
-    host: 'localhost:61616'
-    protocol: kafka
+# servers:
+#   kafka-dev:
+#     host: 'localhost:61616'
+#     protocol: kafka
 channels:
   product-queries:
     address: product-queries
