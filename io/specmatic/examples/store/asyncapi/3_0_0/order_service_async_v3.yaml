@@ -101,6 +101,14 @@ components:
       name: OrderRequest
       title: An order request
       contentType: application/json
+      headers:
+        type: object
+        properties:
+          orderCorrelationId:
+            type: string
+            description: Unique identifier for the request
+      correlationId:
+        $ref: "#/components/correlationIds/orderCorrelationId"
       payload:
         type: object
         required:
@@ -129,6 +137,8 @@ components:
                 - price
       examples:
         - name: NEW_ORDER
+          headers:
+            orderCorrelationId: 12345
           payload:
             id: 10
             orderItems:
@@ -144,6 +154,14 @@ components:
       name: OrderToProcess
       title: An order that needs to be processed
       contentType: application/json
+      headers:
+        type: object
+        properties:
+          orderCorrelationId:
+            type: string
+            description: Unique identifier for the request
+      correlationId:
+        $ref: "#/components/correlationIds/orderCorrelationId"
       payload:
         type: object
         required:
@@ -159,6 +177,8 @@ components:
             $ref: '#/components/messages/OrderStatus'
       examples:
         - name: NEW_ORDER
+          headers:
+            orderCorrelationId: 12345
           payload:
             id: 10
             totalAmount: 3000
@@ -167,6 +187,14 @@ components:
       name: CancelOrderRequest
       title: A cancel order request
       contentType: application/json
+      headers:
+        type: object
+        properties:
+          orderCorrelationId:
+            type: string
+            description: Unique identifier for the request
+      correlationId:
+        $ref: "#/components/correlationIds/orderCorrelationId"
       payload:
         type: object
         required:
@@ -176,12 +204,22 @@ components:
             type: integer
       examples:
         - name: CANCEL_ORDER
+          headers:
+            orderCorrelationId: 12345
           payload:
             id: 10
     CancellationReference:
       name: CancellationReference
       title: A cancellation reference in response to a cancel order request
       contentType: application/json
+      headers:
+        type: object
+        properties:
+          orderCorrelationId:
+            type: string
+            description: Unique identifier for the request
+      correlationId:
+        $ref: "#/components/correlationIds/orderCorrelationId"
       payload:
         type: object
         required:
@@ -194,6 +232,8 @@ components:
             $ref: '#/components/messages/OrderStatus'
       examples:
         - name: CANCEL_ORDER
+          headers:
+            orderCorrelationId: 12345
           payload:
             reference: 10
             status: CANCELLED
@@ -256,3 +296,7 @@ components:
           - SHIPPED
           - DELIVERED
           - CANCELLED
+  
+  correlationIds:
+    orderCorrelationId:
+      location: '$message.header#/orderCorrelationId'
